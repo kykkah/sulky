@@ -2,9 +2,7 @@ apply from: 'dependencyDefinitions.gradle'
 apply from: 'projectDependencies.gradle'
 
 wrapper {
-	gradleVersion = '6.8.1'
-	// TODO:
-	// maven -> maven-publish
+	gradleVersion = '7.6'
 }
 
 def globalSourceCompatibility = 1.8
@@ -117,7 +115,7 @@ allprojects {
 	apply plugin: 'jacoco'
 
 	group = 'de.huxhorn.sulky'
-	version = '8.4.0'
+	version = '8.5.0'
 	def prereleaseIdentifier = System.properties.'prerelease'
 	if(prereleaseIdentifier) {
 		version = version + '-' + prereleaseIdentifier
@@ -142,7 +140,7 @@ allprojects {
 
 subprojects {
 	apply plugin: 'groovy'
-	apply plugin: 'maven'
+	apply plugin: 'maven-publish'
 	apply plugin: 'signing'
 	apply plugin: 'de.thetaphi.forbiddenapis'
 	apply plugin: 'checkstyle'
@@ -213,11 +211,6 @@ subprojects {
 	compileGroovy.options.encoding = sourceEncoding
 	compileTestGroovy.options.encoding = sourceEncoding
 
-	signing {
-		required = { !version.endsWith("SNAPSHOT") }
-		sign configurations.archives
-	}
-
 	task sourceJar(type: Jar) { from sourceSets.main.allSource; classifier = 'sources' }
 	task javadocJar(type: Jar) { from javadoc.outputs.files; classifier = 'javadoc' }
 
@@ -277,8 +270,6 @@ subprojects {
 	configurations {
 		all*.exclude group: 'commons-logging', module: 'commons-logging'
 		all*.exclude group: 'org.codehaus.groovy', module: 'groovy-all'
-
-		published.extendsFrom archives, signatures
 	}
 
 	dependencies {
@@ -292,29 +283,85 @@ subprojects {
 		testRuntimeOnly libraries.'logback-classic'
 	}
 
-	def deployer = null
-
-	uploadPublished {
-		deployer = repositories.mavenDeployer {
-			repository(url: localReleaseRepo)
-			snapshotRepository(url: localSnapshotRepo)
-			beforeDeployment { MavenDeployment deployment ->
-				signing.signPom(deployment)
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				from components.java
+				artifact sourceJar
+				artifact javadocJar
+				pom {
+					name.set(project.name)
+					description.set(project.description ?: project.name)
+					url.set('http://sulky.huxhorn.de')
+					inceptionYear.set('2007')
+					scm {
+						connection.set('scm:git:git://github.com/huxi/sulky.git')
+						developerConnection.set('scm:git:ssh://git@github.com:huxi/sulky.git')
+						url.set('http://github.com/huxi/sulky/')
+					}
+					licenses {
+						license {
+							name.set('GNU Lesser General Public License v3 (LGPL)')
+							url.set('http://www.gnu.org/copyleft/lesser.html')
+							distribution.set('repo')
+						}
+						license {
+							name.set('The Apache Software License, Version 2.0')
+							url.set('http://www.apache.org/licenses/LICENSE-2.0.txt')
+							distribution.set('repo')
+						}
+					}
+					issueManagement {
+						system.set('Github')
+						url.set('https://github.com/huxi/sulky/issues')
+					}
+					developers {
+						developer {
+							id.set('huxhorn')
+							email.set('huxhorn@users.sourceforge.net')
+							name.set('Joern Huxhorn')
+							organization.set('Joern Huxhorn')
+							organizationUrl.set('http://sulky.huxhorn.de')
+							roles.set(['Developer'] as Set)
+						}
+					}
+					properties.set([
+						'project.build.sourceEncoding': 'UTF-8',
+						'project.reporting.outputEncoding': 'UTF-8'
+					])
+				}
+			}
+		}
+		repositories {
+			maven {
+				name = 'local'
+				url = uri(version.endsWith('SNAPSHOT') ? localSnapshotRepo : localReleaseRepo)
 			}
 		}
 	}
 
-	project.ext.installer = install.repositories.mavenInstaller
+	signing {
+		required = { !version.endsWith("SNAPSHOT") }
+		sign publishing.publications['mavenJava']
+	}
 
-	installer.pom.project defaultProject
+	tasks.register('uploadPublished') {
+		group = 'publishing'
+		description = 'Publishes Maven publications to the configured repositories.'
+		dependsOn tasks.named('publish')
+	}
+}
 
-	deployer.pom.project defaultProject
+tasks.register('uploadPublished') {
+	group = 'publishing'
+	description = 'Publishes all Maven publications in subprojects.'
+	dependsOn subprojects.collect { "${it.path}:uploadPublished" }
 }
 
 project(':sulky-version') {
-	// override for sulky-version after subprojects
-	sourceCompatibility = 1.6
-	targetCompatibility = 1.6
+    // override for sulky-version after subprojects
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 }
 
 
