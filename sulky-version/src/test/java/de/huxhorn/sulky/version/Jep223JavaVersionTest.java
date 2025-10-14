@@ -1,11 +1,9 @@
 package de.huxhorn.sulky.version;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +24,7 @@ class Jep223JavaVersionTest {
 
 	@ParameterizedTest(name = "{0}")
 	@MethodSource("getterArguments")
+	@SuppressWarnings("PMD.ExcessiveParameterList")
 	void gettersReturnExpectedValues(String description,
 			String versionString,
 			List<Integer> expectedVersionNumbers,
@@ -119,19 +118,19 @@ class Jep223JavaVersionTest {
 	@Test
 	void equalsWithNullReturnsFalse() {
 		Jep223JavaVersion version = new Jep223JavaVersion(new Integer[] {8, 1}, null, 0, null);
-		assertFalse(version.equals(null));
+		assertNotEquals(null, version);
 	}
 
 	@Test
 	void equalsWithDifferentClassReturnsFalse() {
 		Jep223JavaVersion version = new Jep223JavaVersion(new Integer[] {8, 1}, null, 0, null);
-		assertFalse(version.equals(1));
+		assertNotEquals(version, 1);
 	}
 
 	@Test
 	void equalsWithSameInstanceReturnsTrue() {
 		Jep223JavaVersion version = new Jep223JavaVersion(new Integer[] {8, 1}, null, 0, null);
-		assertTrue(version.equals(version));
+		assertEquals(version, version);
 	}
 
 	@Test

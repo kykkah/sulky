@@ -221,9 +221,9 @@ class JUnitToolsTest
 		}
 
 		@Override
-		public Object clone() throws CloneNotSupportedException
+		public WorkingCloneableClass clone() throws CloneNotSupportedException
 		{
-			return super.clone();
+			return (WorkingCloneableClass) super.clone();
 		}
 
 		@Override
@@ -269,7 +269,7 @@ class JUnitToolsTest
 		}
 
 		@Override
-		public Object clone()
+		public HackyCloneableSingletonClass clone()
 		{
 			return INSTANCE;
 		}
@@ -307,6 +307,8 @@ class JUnitToolsTest
 	private static final class ClassWithoutDefaultConstructor
 		implements Serializable
 	{
+		private static final long serialVersionUID = 1L;
+
 		private final String value;
 
 		private ClassWithoutDefaultConstructor(String value)
@@ -344,9 +346,8 @@ class JUnitToolsTest
 		}
 	}
 
-	@SuppressWarnings({"deprecation", "removal"})
 	private static Integer distinctInteger()
 	{
-		return new Integer(17);
+		return Integer.valueOf(256);
 	}
 }

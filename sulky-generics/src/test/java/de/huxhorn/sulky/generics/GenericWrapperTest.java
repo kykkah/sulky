@@ -2,6 +2,7 @@ package de.huxhorn.sulky.generics;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -21,15 +22,15 @@ class GenericWrapperTest {
 		GenericWrapper<Number> oneIntWrapper = new GenericWrapper<>(1);
 		GenericWrapper<Number> oneLongWrapper = new GenericWrapper<>(1L);
 
-		assertFalse(oneIntWrapper.equals(null));
-		assertFalse(oneIntWrapper.equals(1));
-		assertTrue(oneIntWrapper.equals(oneIntWrapper));
-		assertTrue(oneIntWrapper.equals(new GenericWrapper<>(1)));
-		assertFalse(oneIntWrapper.equals(oneLongWrapper));
-		assertFalse(oneLongWrapper.equals(oneIntWrapper));
-		assertFalse(oneIntWrapper.equals(nullWrapper));
-		assertFalse(nullWrapper.equals(oneIntWrapper));
-		assertTrue(nullWrapper.equals(new GenericWrapper<>(null)));
+		assertNotEquals(null, oneIntWrapper);
+		assertNotEquals(1, oneIntWrapper);
+		assertEquals(oneIntWrapper, oneIntWrapper);
+		assertEquals(new GenericWrapper<>(1), oneIntWrapper);
+		assertNotEquals(oneLongWrapper, oneIntWrapper);
+		assertNotEquals(oneIntWrapper, oneLongWrapper);
+		assertNotEquals(nullWrapper, oneIntWrapper);
+		assertNotEquals(oneIntWrapper, nullWrapper);
+		assertEquals(new GenericWrapper<>(null), nullWrapper);
 	}
 
 	@Test

@@ -8,20 +8,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.DayOfWeek;
 import java.time.Instant;
+import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 class SafeStringTest {
 
 	private static final Map<String, Object> RECURSIVE_MAP;
@@ -95,7 +99,7 @@ class SafeStringTest {
 		LIST_INSIDE_TREE_MAP.put("foo", sharedList);
 		LIST_INSIDE_TREE_MAP.put("bar", sharedList);
 
-		String[] sharedArray = new String[] {"One", "Two"};
+		String[] sharedArray = {"One", "Two"};
 		ARRAY_INSIDE_TREE_MAP = new TreeMap<>();
 		ARRAY_INSIDE_TREE_MAP.put("foo", sharedArray);
 		ARRAY_INSIDE_TREE_MAP.put("bar", sharedArray);
@@ -109,27 +113,27 @@ class SafeStringTest {
 		ARRAY_INSIDE_LIST.add(sharedArray);
 		ARRAY_INSIDE_LIST.add(sharedArray);
 
-		byte[] bytePrimitiveArray = new byte[] {1, 2, 3, 0, Byte.MAX_VALUE, Byte.MIN_VALUE, -1, (byte) 0xCA, (byte) 0xFE,
+		byte[] bytePrimitiveArray = {1, 2, 3, 0, Byte.MAX_VALUE, Byte.MIN_VALUE, -1, (byte) 0xCA, (byte) 0xFE,
 				(byte) 0xBA, (byte) 0xBE};
 		Byte[] byteObjectArray = toBoxed(bytePrimitiveArray);
-		short[] shortPrimitiveArray = new short[] {1, 2, 3, 0, Short.MAX_VALUE, Short.MIN_VALUE};
+		short[] shortPrimitiveArray = {1, 2, 3, 0, Short.MAX_VALUE, Short.MIN_VALUE};
 		Short[] shortObjectArray = toBoxed(shortPrimitiveArray);
-		int[] intPrimitiveArray = new int[] {1, 2, 3, 0, Integer.MAX_VALUE, Integer.MIN_VALUE};
+		int[] intPrimitiveArray = {1, 2, 3, 0, Integer.MAX_VALUE, Integer.MIN_VALUE};
 		Integer[] intObjectArray = toBoxed(intPrimitiveArray);
-		long[] longPrimitiveArray = new long[] {1, 2, 3, 0, Long.MAX_VALUE, Long.MIN_VALUE};
+		long[] longPrimitiveArray = {1, 2, 3, 0, Long.MAX_VALUE, Long.MIN_VALUE};
 		Long[] longObjectArray = toBoxed(longPrimitiveArray);
-		float[] floatPrimitiveArray = new float[] {3.14159265f, 42.0f, -3.14159265f, 0.0f, Float.NaN, Float.MAX_VALUE,
+		float[] floatPrimitiveArray = {3.141_592_65f, 42.0f, -3.141_592_65f, 0.0f, Float.NaN, Float.MAX_VALUE,
 				Float.MIN_VALUE, Float.POSITIVE_INFINITY, Float.NEGATIVE_INFINITY};
 		Float[] floatObjectArray = toBoxed(floatPrimitiveArray);
-		double[] doublePrimitiveArray = new double[] {3.14159265d, 42.0d, -3.14159265d, 0.0d, Double.NaN,
+		double[] doublePrimitiveArray = {3.141_592_65d, 42.0d, -3.141_592_65d, 0.0d, Double.NaN,
 				Double.MAX_VALUE, Double.MIN_VALUE, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
 		Double[] doubleObjectArray = toBoxed(doublePrimitiveArray);
-		boolean[] booleanPrimitiveArray = new boolean[] {true, false};
+		boolean[] booleanPrimitiveArray = {true, false};
 		Boolean[] booleanObjectArray = toBoxed(booleanPrimitiveArray);
-		char[] charPrimitiveArray = new char[] {'b', 'a', 'r', 0, '!'};
+		char[] charPrimitiveArray = {'b', 'a', 'r', 0, '!'};
 		Character[] charObjectArray = toBoxed(charPrimitiveArray);
 
-		ArrayList<Object> listContainingNull = new ArrayList<>();
+		List<Object> listContainingNull = new ArrayList<>();
 		listContainingNull.add(null);
 
 		Map<String, Object> mapWithNullValue = new HashMap<>();
@@ -148,23 +152,23 @@ class SafeStringTest {
 		mapWithObjectKey.put(new UnproblematicToString(), "foo");
 
 		Object[] emptyObjectArray = new Object[0];
-		ArrayList<Object> emptyList = new ArrayList<>();
-		HashSet<Object> emptySet = new HashSet<>();
-		Object[] objectArrayWithEmptyString = new Object[] {""};
-		ArrayList<Object> listWithEmptyString = new ArrayList<>(List.of(""));
-		HashSet<Object> setWithEmptyString = new HashSet<>(List.of(""));
-		String[] stringArrayABC = new String[] {"a", "b", "c"};
-		String[] stringArrayWithNull = new String[] {"a", null, "c"};
-		String[] stringArrayWithStringNull = new String[] {"a", "null", "c"};
+		List<Object> emptyList = new ArrayList<>();
+		SimpleSet<Object> emptySet = new SimpleSet<>();
+		Object[] objectArrayWithEmptyString = {""};
+		List<Object> listWithEmptyString = new ArrayList<>(List.of(""));
+		SimpleSet<Object> setWithEmptyString = new SimpleSet<>(List.of(""));
+		String[] stringArrayABC = {"a", "b", "c"};
+		String[] stringArrayWithNull = {"a", null, "c"};
+		String[] stringArrayWithStringNull = {"a", "null", "c"};
 
 		VALID_VALUE_CASES = new Object[][] {
 				{null, null, "null", null, null},
 				{"foo", String.class, "foo", null, "'foo'"},
 				{new UnproblematicToString(), UnproblematicToString.class, "UnproblematicToString", null, null},
-				{new Date(1234567890000L), Date.class, "2009-02-13T23:31:30.000Z", null, null},
-				{new Date(1234567890017L), Date.class, "2009-02-13T23:31:30.017Z", null, null},
-				{Instant.ofEpochMilli(1234567890000L), Instant.class, "2009-02-13T23:31:30.000Z", null, null},
-				{Instant.ofEpochMilli(1234567890017L), Instant.class, "2009-02-13T23:31:30.017Z", null, null},
+				{new Date(1_234_567_890_000L), Date.class, "2009-02-13T23:31:30.000Z", null, null},
+				{new Date(1_234_567_890_017L), Date.class, "2009-02-13T23:31:30.017Z", null, null},
+				{Instant.ofEpochMilli(1_234_567_890_000L), Instant.class, "2009-02-13T23:31:30.000Z", null, null},
+				{Instant.ofEpochMilli(1_234_567_890_017L), Instant.class, "2009-02-13T23:31:30.017Z", null, null},
 				{DayOfWeek.SATURDAY, DayOfWeek.class, "SATURDAY", null, null},
 				{Byte.valueOf((byte) 0), Byte.class, "0x00", null, null},
 				{Byte.valueOf((byte) -1), Byte.class, "0xFF", null, null},
@@ -200,34 +204,34 @@ class SafeStringTest {
 				{booleanObjectArray, Boolean[].class, "[true, false]", null, "[true, false]"},
 				{charPrimitiveArray, char[].class, "[b, a, r, \00, !]", null, "[b, a, r, \00, !]"},
 				{charObjectArray, Character[].class, "[b, a, r, \00, !]", null, "[b, a, r, \00, !]"},
-		{LIST_INSIDE_TREE_MAP, TreeMap.class, "{bar=[One, Two], foo=[One, Two]}",
+		{LIST_INSIDE_TREE_MAP, LIST_INSIDE_TREE_MAP.getClass(), "{bar=[One, Two], foo=[One, Two]}",
 			"{\"bar\"=[\"One\", \"Two\"], \"foo\"=[\"One\", \"Two\"]}",
 			"['bar':['One', 'Two'], 'foo':['One', 'Two']]"},
-		{ARRAY_INSIDE_TREE_MAP, TreeMap.class, "{bar=[One, Two], foo=[One, Two]}",
+		{ARRAY_INSIDE_TREE_MAP, ARRAY_INSIDE_TREE_MAP.getClass(), "{bar=[One, Two], foo=[One, Two]}",
 			"{\"bar\"=[\"One\", \"Two\"], \"foo\"=[\"One\", \"Two\"]}",
 			"['bar':['One', 'Two'], 'foo':['One', 'Two']]"},
-		{LIST_INSIDE_LIST, ArrayList.class, "[[One, Two], [One, Two]]",
+		{LIST_INSIDE_LIST, LIST_INSIDE_LIST.getClass(), "[[One, Two], [One, Two]]",
 			"[[\"One\", \"Two\"], [\"One\", \"Two\"]]",
 			"[['One', 'Two'], ['One', 'Two']]"},
-		{ARRAY_INSIDE_LIST, ArrayList.class, "[[One, Two], [One, Two]]",
+		{ARRAY_INSIDE_LIST, ARRAY_INSIDE_LIST.getClass(), "[[One, Two], [One, Two]]",
 			"[[\"One\", \"Two\"], [\"One\", \"Two\"]]",
 			"[['One', 'Two'], ['One', 'Two']]"},
-				{listContainingNull, ArrayList.class, "[null]", null, null},
-				{mapWithNullValue, HashMap.class, "{foo=null}", "{\"foo\"=null}", "['foo':null]"},
-				{mapWithStringNullValue, HashMap.class, "{bar=null}", "{\"bar\"=\"null\"}", "['bar':'null']"},
-				{mapWithNullKey, HashMap.class, "{null=foo}", "{null=\"foo\"}", "[null:'foo']"},
-				{mapWithStringNullKey, HashMap.class, "{null=bar}", "{\"null\"=\"bar\"}", "['null':'bar']"},
-				{mapWithObjectKey, HashMap.class, "{UnproblematicToString=foo}",
+				{listContainingNull, listContainingNull.getClass(), "[null]", null, null},
+				{mapWithNullValue, mapWithNullValue.getClass(), "{foo=null}", "{\"foo\"=null}", "['foo':null]"},
+				{mapWithStringNullValue, mapWithStringNullValue.getClass(), "{bar=null}", "{\"bar\"=\"null\"}", "['bar':'null']"},
+				{mapWithNullKey, mapWithNullKey.getClass(), "{null=foo}", "{null=\"foo\"}", "[null:'foo']"},
+				{mapWithStringNullKey, mapWithStringNullKey.getClass(), "{null=bar}", "{\"null\"=\"bar\"}", "['null':'bar']"},
+				{mapWithObjectKey, mapWithObjectKey.getClass(), "{UnproblematicToString=foo}",
 					"{UnproblematicToString=\"foo\"}", "[UnproblematicToString:'foo']"},
 				{emptyObjectArray, Object[].class, "[]", null, null},
-				{emptyList, ArrayList.class, "[]", null, null},
-				{emptySet, HashSet.class, "[]", null, null},
+				{emptyList, emptyList.getClass(), "[]", null, null},
+				{emptySet, SimpleSet.class, "[]", null, null},
 				{objectArrayWithEmptyString, Object[].class, "[]", "[\"\"]", "['']"},
-				{listWithEmptyString, ArrayList.class, "[]", "[\"\"]", "['']"},
-				{setWithEmptyString, HashSet.class, "[]", "[\"\"]", "['']"},
+				{listWithEmptyString, listWithEmptyString.getClass(), "[]", "[\"\"]", "['']"},
+				{setWithEmptyString, SimpleSet.class, "[]", "[\"\"]", "['']"},
 				{stringArrayABC, String[].class, "[a, b, c]", "[\"a\", \"b\", \"c\"]", "['a', 'b', 'c']"},
 				{stringArrayWithNull, String[].class, "[a, null, c]", "[\"a\", null, \"c\"]", "['a', null, 'c']"},
-				{stringArrayWithStringNull, String[].class, "[a, null, c]", "[\"a\", \"null\", \"c\"]", "['a', 'null', 'c']"}
+				{stringArrayWithStringNull, String[].class, "[a, null, c]", "[\"a\", \"null\", \"c\"]", "['a', 'null', 'c']"},
 		};
 
 		INVALID_VALUE_CASES = new Object[][] {
@@ -236,7 +240,7 @@ class SafeStringTest {
 		{RECURSIVE_OBJECT_ARRAY, null, RECURSIVE_OBJECT_ARRAY_EXPECTED},
 				{PROBLEMATIC_1, FooThrowable.class, PROBLEMATIC_1_EXPECTED},
 				{PROBLEMATIC_2, FooThrowable.class, PROBLEMATIC_2_EXPECTED},
-				{PROBLEMATIC_3, FooThrowable.class, PROBLEMATIC_3_EXPECTED}
+				{PROBLEMATIC_3, FooThrowable.class, PROBLEMATIC_3_EXPECTED},
 		};
 	}
 
@@ -348,67 +352,51 @@ class SafeStringTest {
 	}
 
 	private static Byte[] toBoxed(byte[] array) {
-		Byte[] boxed = new Byte[array.length];
-		for (int i = 0; i < array.length; i++) {
-			boxed[i] = array[i];
-		}
-		return boxed;
+		return IntStream.range(0, array.length)
+				.mapToObj(i -> Byte.valueOf(array[i]))
+				.toArray(Byte[]::new);
 	}
 
 	private static Short[] toBoxed(short[] array) {
-		Short[] boxed = new Short[array.length];
-		for (int i = 0; i < array.length; i++) {
-			boxed[i] = array[i];
-		}
-		return boxed;
+		return IntStream.range(0, array.length)
+				.mapToObj(i -> Short.valueOf(array[i]))
+				.toArray(Short[]::new);
 	}
 
 	private static Integer[] toBoxed(int[] array) {
-		Integer[] boxed = new Integer[array.length];
-		for (int i = 0; i < array.length; i++) {
-			boxed[i] = array[i];
-		}
-		return boxed;
+		return Arrays.stream(array)
+				.boxed()
+				.toArray(Integer[]::new);
 	}
 
 	private static Long[] toBoxed(long[] array) {
-		Long[] boxed = new Long[array.length];
-		for (int i = 0; i < array.length; i++) {
-			boxed[i] = array[i];
-		}
-		return boxed;
+		return Arrays.stream(array)
+				.boxed()
+				.toArray(Long[]::new);
 	}
 
 	private static Float[] toBoxed(float[] array) {
-		Float[] boxed = new Float[array.length];
-		for (int i = 0; i < array.length; i++) {
-			boxed[i] = array[i];
-		}
-		return boxed;
+		return IntStream.range(0, array.length)
+				.mapToObj(i -> Float.valueOf(array[i]))
+				.toArray(Float[]::new);
 	}
 
 	private static Double[] toBoxed(double[] array) {
-		Double[] boxed = new Double[array.length];
-		for (int i = 0; i < array.length; i++) {
-			boxed[i] = array[i];
-		}
-		return boxed;
+		return Arrays.stream(array)
+				.boxed()
+				.toArray(Double[]::new);
 	}
 
 	private static Boolean[] toBoxed(boolean[] array) {
-		Boolean[] boxed = new Boolean[array.length];
-		for (int i = 0; i < array.length; i++) {
-			boxed[i] = array[i];
-		}
-		return boxed;
+		return IntStream.range(0, array.length)
+				.mapToObj(i -> Boolean.valueOf(array[i]))
+				.toArray(Boolean[]::new);
 	}
 
 	private static Character[] toBoxed(char[] array) {
-		Character[] boxed = new Character[array.length];
-		for (int i = 0; i < array.length; i++) {
-			boxed[i] = array[i];
-		}
-		return boxed;
+		return IntStream.range(0, array.length)
+				.mapToObj(i -> Character.valueOf(array[i]))
+				.toArray(Character[]::new);
 	}
 
 	private static class UnproblematicToString {
@@ -432,8 +420,48 @@ class SafeStringTest {
 	}
 
 	private static class FooThrowable extends RuntimeException {
+		private static final long serialVersionUID = 1L;
+
 		private FooThrowable(String message) {
 			super(message);
+		}
+	}
+
+	private static final class SimpleSet<E> extends AbstractSet<E> {
+		private final List<E> elements = new ArrayList<>();
+
+		SimpleSet() {
+			// default constructor
+		}
+
+		SimpleSet(Collection<? extends E> initialElements) {
+			for (E element : initialElements) {
+				add(element);
+			}
+		}
+
+		@Override
+		public Iterator<E> iterator() {
+			return elements.iterator();
+		}
+
+		@Override
+		public int size() {
+			return elements.size();
+		}
+
+		@Override
+		public boolean add(E element) {
+			if (elements.contains(element)) {
+				return false;
+			}
+			elements.add(element);
+			return true;
+		}
+
+		@Override
+		public boolean contains(Object o) {
+			return elements.contains(o);
 		}
 	}
 }

@@ -43,8 +43,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -55,7 +53,7 @@ class JavaVersionTest {
 	private static final boolean CURRENT_VERSION_IS_JEP223 = CURRENT_VERSION instanceof Jep223JavaVersion;
 
 	@ParameterizedTest
-	@ValueSource(strings = {"1x", "1.2x", "1.2.3x", "1.2.3.4", "1.2.3_4x", "1.2.3_4-", "-1.6"})
+	@ValueSource(strings = {"1x", "1.2x", "1.2.3x", "1.2.3.4a", "1.2.3_4x", "1.2.3_4-", "-1.6"})
 	void parseRejectsInvalidVersion(String versionString) {
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> JavaVersion.parse(versionString));
 		assertEquals("versionString '" + versionString + "' is invalid.", exception.getMessage());
@@ -115,7 +113,7 @@ class JavaVersionTest {
 	}
 
 	@ParameterizedTest
-	@ValueSource(strings = {"1x", "1.2x", "1.2.3x", "1.2.3.4", "1.2.3_4x", "1.2.3_4-", "-1.6"})
+	@ValueSource(strings = {"1x", "1.2x", "1.2.3x", "1.2.3.4a", "1.2.3_4x", "1.2.3_4-", "-1.6"})
 	void isAtLeastStringRejectsInvalidVersion(String versionString) {
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> JavaVersion.isAtLeast(versionString));
 		assertEquals("versionString '" + versionString + "' is invalid.", exception.getMessage());
@@ -135,7 +133,7 @@ class JavaVersionTest {
 
 	@ParameterizedTest(name = "COMPARATOR compares {0} and {1}")
 	@MethodSource("comparatorProvider")
-	void comparator( JavaVersion versionA, JavaVersion versionB, int expectedResult) {
+	void comparator(JavaVersion versionA, JavaVersion versionB, int expectedResult) {
 		int result1 = JavaVersion.COMPARATOR.compare(versionA, versionB);
 		int result2 = JavaVersion.COMPARATOR.compare(versionB, versionA);
 		assertEquals(expectedResult, result1);

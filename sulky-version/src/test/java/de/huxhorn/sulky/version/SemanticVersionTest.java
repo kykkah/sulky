@@ -44,10 +44,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SemanticVersionTest {
 
@@ -58,7 +56,7 @@ class SemanticVersionTest {
 		String generatedVersionString = version.toString();
 		String regeneratedVersionString = version.toString();
 
-		assertTrue(version.equals(expectedValue));
+		assertEquals(expectedValue, version);
 		assertEquals(expectedValue.hashCode(), version.hashCode());
 		assertEquals(versionString, generatedVersionString);
 		assertEquals(expectedValue.toString(), generatedVersionString);
@@ -83,10 +81,10 @@ class SemanticVersionTest {
 		SemanticVersion versionA = SemanticVersion.parse(versionAString);
 		SemanticVersion versionB = SemanticVersion.parse(versionBString);
 		if (expectedResult) {
-			assertTrue(versionA.equals(versionB));
+			assertEquals(versionA, versionB);
 			assertEquals(versionA.hashCode(), versionB.hashCode());
 		} else {
-			assertFalse(versionA.equals(versionB));
+			assertNotEquals(versionA, versionB);
 		}
 	}
 
@@ -158,18 +156,18 @@ class SemanticVersionTest {
 
 	@Test
 	void equalsNullReturnsFalse() {
-		assertFalse(new SemanticVersion(1, 0, 0).equals(null));
+		assertNotEquals(null, new SemanticVersion(1, 0, 0));
 	}
 
 	@Test
 	void equalsDifferentTypeReturnsFalse() {
-		assertFalse(new SemanticVersion(1, 0, 0).equals(new Object()));
+		assertNotEquals(new SemanticVersion(1, 0, 0), new Object());
 	}
 
 	@Test
 	void equalsThisReturnsTrue() {
 		SemanticVersion version = new SemanticVersion(1, 0, 0);
-		assertTrue(version.equals(version));
+		assertEquals(version, version);
 	}
 
 	@Test

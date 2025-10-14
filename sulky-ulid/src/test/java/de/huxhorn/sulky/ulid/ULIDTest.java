@@ -50,16 +50,14 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ULIDTest {
 
-    private static final long PAST_TIMESTAMP = 1481195424879L;
+    private static final long PAST_TIMESTAMP = 1_481_195_424_879L;
     private static final String PAST_TIMESTAMP_PART = "01B3F2133F";
-
-    private static final long MIN_TIMESTAMP = 0x0L;
-    private static final String MIN_TIMESTAMP_PART = "0000000000";
 
     private static final long MAX_TIMESTAMP = 0xFFFF_FFFF_FFFFL;
     private static final String MAX_TIMESTAMP_PART = "7ZZZZZZZZZ";
@@ -71,11 +69,11 @@ class ULIDTest {
 
     private static final byte[] ZERO_BYTES = new byte[16];
     private static final byte[] FULL_BYTES = repeat((byte) 0xFF, 16);
-    private static final byte[] PATTERN_BYTES = new byte[] {
+    private static final byte[] PATTERN_BYTES = {
         (byte) 0x00, (byte) 0x11, (byte) 0x22, (byte) 0x33,
         (byte) 0x44, (byte) 0x55, (byte) 0x66, (byte) 0x77,
         (byte) 0x88, (byte) 0x99, (byte) 0xAA, (byte) 0xBB,
-        (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF
+        (byte) 0xCC, (byte) 0xDD, (byte) 0xEE, (byte) 0xFF,
     };
 
     private static final long PATTERN_MOST_SIGNIFICANT_BITS = 0x0011_2233_4455_6677L;
@@ -182,7 +180,7 @@ class ULIDTest {
 
     @Test
     void internalAppendULIDWithZeroRandom() {
-        StubRandom random = StubRandom.of(0L, 0L);
+        StubRandom random = StubRandom.fromValues(0L, 0L);
         StringBuilder builder = new StringBuilder();
         ULID.internalAppendULID(builder, PAST_TIMESTAMP, random);
         random.assertExhausted();
@@ -194,7 +192,7 @@ class ULIDTest {
 
     @Test
     void internalAppendULIDWithMinusOneRandom() {
-        StubRandom random = StubRandom.of(-1L, -1L);
+        StubRandom random = StubRandom.fromValues(-1L, -1L);
         StringBuilder builder = new StringBuilder();
         ULID.internalAppendULID(builder, PAST_TIMESTAMP, random);
         random.assertExhausted();
@@ -206,7 +204,7 @@ class ULIDTest {
 
     @Test
     void internalUIDStringWithZeroRandom() {
-        StubRandom random = StubRandom.of(0L, 0L);
+        StubRandom random = StubRandom.fromValues(0L, 0L);
         String result = ULID.internalUIDString(PAST_TIMESTAMP, random);
         random.assertExhausted();
         assertEquals(26, result.length());
@@ -216,7 +214,7 @@ class ULIDTest {
 
     @Test
     void internalUIDStringWithMinusOneRandom() {
-        StubRandom random = StubRandom.of(-1L, -1L);
+        StubRandom random = StubRandom.fromValues(-1L, -1L);
         String result = ULID.internalUIDString(PAST_TIMESTAMP, random);
         random.assertExhausted();
         assertEquals(26, result.length());
@@ -226,7 +224,7 @@ class ULIDTest {
 
     @Test
     void nextULIDWithZeroRandom() {
-        StubRandom random = StubRandom.of(0L, 0L);
+        StubRandom random = StubRandom.fromValues(0L, 0L);
         ULID ulid = new ULID(random);
         String result = ulid.nextULID();
         random.assertExhausted();
@@ -239,7 +237,7 @@ class ULIDTest {
 
     @Test
     void nextULIDWithMinusOneRandom() {
-        StubRandom random = StubRandom.of(-1L, -1L);
+        StubRandom random = StubRandom.fromValues(-1L, -1L);
         ULID ulid = new ULID(random);
         String result = ulid.nextULID();
         random.assertExhausted();
@@ -265,7 +263,7 @@ class ULIDTest {
 
     @Test
     void nextValueWithZeroRandom() {
-        StubRandom random = StubRandom.of(0L, 0L);
+        StubRandom random = StubRandom.fromValues(0L, 0L);
         ULID ulid = new ULID(random);
         String result = ulid.nextValue().toString();
         random.assertExhausted();
@@ -278,7 +276,7 @@ class ULIDTest {
 
     @Test
     void nextValueWithMinusOneRandom() {
-        StubRandom random = StubRandom.of(-1L, -1L);
+        StubRandom random = StubRandom.fromValues(-1L, -1L);
         ULID ulid = new ULID(random);
         String result = ulid.nextValue().toString();
         random.assertExhausted();
@@ -304,7 +302,7 @@ class ULIDTest {
 
     @Test
     void appendULIDWithZeroRandom() {
-        StubRandom random = StubRandom.of(0L, 0L);
+        StubRandom random = StubRandom.fromValues(0L, 0L);
         ULID ulid = new ULID(random);
         StringBuilder builder = new StringBuilder();
         ulid.appendULID(builder);
@@ -319,7 +317,7 @@ class ULIDTest {
 
     @Test
     void appendULIDWithMinusOneRandom() {
-        StubRandom random = StubRandom.of(-1L, -1L);
+        StubRandom random = StubRandom.fromValues(-1L, -1L);
         ULID ulid = new ULID(random);
         StringBuilder builder = new StringBuilder();
         ulid.appendULID(builder);
@@ -481,14 +479,14 @@ class ULIDTest {
     @Test
     void valueEqualsItself() {
         ULID.Value value = new ULID.Value(0, 0);
-        assertTrue(value.equals(value));
+        assertEquals(value, value);
     }
 
     @Test
     void valueNotEqualToNullOrDifferentType() {
         ULID.Value value = new ULID.Value(0, 0);
-        assertFalse(value.equals(null));
-        assertFalse(value.equals(""));
+        assertNotEquals(null, value);
+        assertNotEquals("", value);
     }
 
     @ParameterizedTest
@@ -680,6 +678,7 @@ class ULIDTest {
     }
 
     private static final class StubRandom extends Random {
+        private static final long serialVersionUID = 1L;
         private final long[] values;
         private int index;
 
@@ -687,7 +686,7 @@ class ULIDTest {
             this.values = values;
         }
 
-        static StubRandom of(long... values) {
+        static StubRandom fromValues(long... values) {
             return new StubRandom(values);
         }
 

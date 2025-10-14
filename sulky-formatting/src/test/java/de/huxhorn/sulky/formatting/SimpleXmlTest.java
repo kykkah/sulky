@@ -2,6 +2,7 @@ package de.huxhorn.sulky.formatting;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 import java.util.stream.Stream;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -121,8 +122,6 @@ class SimpleXmlTest {
 	}
 
 	private static void assertTrueSameReference(String expected, String actual) {
-		if (expected != actual) {
-			throw new AssertionError("Expected same reference");
-		}
+		assertSame(expected, actual);
 	}
 }

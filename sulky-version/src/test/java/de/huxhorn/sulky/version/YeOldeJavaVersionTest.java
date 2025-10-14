@@ -43,7 +43,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -58,7 +58,7 @@ class YeOldeJavaVersionTest {
 	}
 
 	@ParameterizedTest(name = "parse({0}) throws IllegalArgumentException")
-	@ValueSource(strings = {"1", "1x", "1.2x", "1.2.3x", "1.2.3.4", "1.2.3_4x", "1.2.3_4-", "-1.6"})
+	@ValueSource(strings = {"1", "1x", "1.2x", "1.2.3x", "1.2.3.4a", "1.2.3_4x", "1.2.3_4-", "-1.6"})
 	void parseRejectsInvalidVersions(String versionString) {
 		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> YeOldeJavaVersion.parse(versionString));
 		assertEquals("versionString '" + versionString + "' is invalid.", exception.getMessage());
@@ -198,7 +198,7 @@ class YeOldeJavaVersionTest {
 			assertEquals(object, other);
 			assertEquals(object.hashCode(), other.hashCode());
 		} else {
-			assertFalse(object.equals(other));
+			assertNotEquals(object, other);
 		}
 	}
 
@@ -230,13 +230,13 @@ class YeOldeJavaVersionTest {
 	@Test
 	void equalsNullReturnsFalse() {
 		YeOldeJavaVersion object = new YeOldeJavaVersion(1, 6);
-		assertFalse(object.equals(null));
+		assertNotEquals(null, object);
 	}
 
 	@Test
 	void equalsDifferentTypeReturnsFalse() {
 		YeOldeJavaVersion object = new YeOldeJavaVersion(1, 6);
-		assertFalse(object.equals(1));
+		assertNotEquals(object, 1);
 	}
 
 	@ParameterizedTest(name = "serialization works for {0}")
