@@ -71,7 +71,7 @@ public final class KeyStrokes
 		String keyMaskString = "control";
 		try
 		{
-			int keyMask = toolkit.getMenuShortcutKeyMask();
+			int keyMask = toolkit.getMenuShortcutKeyMaskEx();
 			keyMaskString = AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_A, keyMask).toString();
 			keyMaskString = keyMaskString.substring(0, keyMaskString.length()-" pressed A".length());
 			if(LOGGER.isDebugEnabled()) LOGGER.debug("Resolved system-dependent command modifiers '{}'.", keyMaskString);

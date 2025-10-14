@@ -86,7 +86,7 @@ class JavaVersionSpec extends Specification {
 		versionString                                   | expectedResult
 		"1.0.0"                                         | true
 		JavaVersion.systemJavaVersion.toVersionString() | true
-		"17.0"                                          | false
+		"17.0"                                          | (JavaVersion.systemJavaVersion.major >= 17)
 
 		compareString = expectedResult ? '' : 'n\'t'
 		jvmString = JavaVersion.systemJavaVersion.toVersionString()

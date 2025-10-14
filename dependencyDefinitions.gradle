@@ -1,18 +1,19 @@
 project.ext.versions = [
-'bytebuddy': '1.12.3',
-'groovy':    '2.5.15',
-'logback':   '1.2.8',
-'protobuf':  '3.19.1',
-'slf4j':     '1.7.32',
-'spock':     '1.3-groovy-2.5'
+'bytebuddy':     '1.14.12',
+'groovy':        '4.0.21',
+'logback':       '1.5.12',
+'protobuf':      '3.25.5',
+'slf4j':         '2.0.16',
+'spock':         '2.3-groovy-4.0',
+'junitPlatform': '5.11.3'
 ]
 
 project.ext.libraries = [
 'byte-buddy':             "net.bytebuddy:byte-buddy:${versions.bytebuddy}",
-'commons-codec':          'commons-codec:commons-codec:1.15',
-'commons-io':             'commons-io:commons-io:2.11.0',
-'easymock':               'org.easymock:easymock:3.6',
-'groovy':                 "org.codehaus.groovy:groovy:${versions.groovy}",
+'commons-codec':          'commons-codec:commons-codec:1.17.1',
+'commons-io':             'commons-io:commons-io:2.16.1',
+'easymock':               'org.easymock:easymock:5.3.0',
+'groovy':                 "org.apache.groovy:groovy:${versions.groovy}",
 'jcl-over-slf4j':         "org.slf4j:jcl-over-slf4j:${versions.slf4j}",
 'jlayer':                 'de.huxhorn.sulky:de.huxhorn.sulky.3rdparty.jlayer:1.0',
 'junit':                  'junit:junit:4.13.2',
@@ -23,3 +24,7 @@ project.ext.libraries = [
 'slf4j-api':              "org.slf4j:slf4j-api:${versions.slf4j}",
 'spock-core':             "org.spockframework:spock-core:${versions.spock}"
 ]
+
+// Optional test engines (used when running JUnit 4 tests on JUnit Platform)
+project.ext.libraries['junit-vintage-engine'] = "org.junit.vintage:junit-vintage-engine:${versions.junitPlatform}"
+project.ext.libraries['junit-jupiter-api'] = "org.junit.jupiter:junit-jupiter-api:${versions.junitPlatform}"

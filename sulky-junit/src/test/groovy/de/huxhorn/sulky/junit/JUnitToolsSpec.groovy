@@ -34,17 +34,17 @@
 
 package de.huxhorn.sulky.junit
 
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import spock.lang.Unroll
+import spock.lang.TempDir
 
 import java.time.DayOfWeek
+import java.util.UUID
 
 class JUnitToolsSpec extends Specification {
 
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder()
+	@TempDir
+	File folder
 
 	def validDifferentCloneValues() {
 		[
@@ -362,7 +362,8 @@ class JUnitToolsSpec extends Specification {
 	@Unroll
 	def 'copyResourceToFile("/#resourceName", ..., specificTime) works as expected.'() {
 		setup:
-		File rootDirectory = folder.newFolder()
+		File rootDirectory = new File(folder, UUID.randomUUID().toString())
+		assert rootDirectory.mkdirs()
 		println rootDirectory.absolutePath
 		File targetFile = new File(rootDirectory, resourceName)
 		long lastModified = System.currentTimeMillis()
@@ -385,7 +386,8 @@ class JUnitToolsSpec extends Specification {
 	@Unroll
 	def 'copyResourceToFile("/#resourceName", ..., negativeValue) works as expected.'() {
 		setup:
-		File rootDirectory = folder.newFolder()
+		File rootDirectory = new File(folder, UUID.randomUUID().toString())
+		assert rootDirectory.mkdirs()
 		println rootDirectory.absolutePath
 		File targetFile = new File(rootDirectory, resourceName)
 		long lastModified = System.currentTimeMillis()
@@ -407,7 +409,8 @@ class JUnitToolsSpec extends Specification {
 	@Unroll
 	def 'copyResourceToFile("/#resourceName", ...) works as expected.'() {
 		setup:
-		File rootDirectory = folder.newFolder()
+		File rootDirectory = new File(folder, UUID.randomUUID().toString())
+		assert rootDirectory.mkdirs()
 		println rootDirectory.absolutePath
 		File targetFile = new File(rootDirectory, resourceName)
 		long lastModified = System.currentTimeMillis()
@@ -429,7 +432,8 @@ class JUnitToolsSpec extends Specification {
 	@Unroll
 	def 'copyResourceToFile("/#resourceName", ..., specificTime) fails as expected.'() {
 		setup:
-		File rootDirectory = folder.newFolder()
+		File rootDirectory = new File(folder, UUID.randomUUID().toString())
+		assert rootDirectory.mkdirs()
 		println rootDirectory.absolutePath
 		File targetFile = new File(rootDirectory, resourceName)
 

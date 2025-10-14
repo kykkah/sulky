@@ -5,13 +5,14 @@ wrapper {
 	gradleVersion = '7.6'
 }
 
-def globalSourceCompatibility = 1.8
-def globalTargetCompatibility = 1.8
+def globalSourceCompatibility = '17'
+def globalTargetCompatibility = '17'
 
 apply plugin: 'idea'
 
 idea {
 	project {
+		// Ensure IntelliJ uses Java 17
 		jdkName = globalSourceCompatibility
 		languageLevel = globalSourceCompatibility
 
@@ -33,7 +34,6 @@ buildscript {
 	project.ext.localReleaseRepo = localReleaseRepoFile.toURL().toString()
 	project.ext.localSnapshotRepo = localSnapshotRepoFile.toURL().toString()
 	repositories {
-		jcenter()
 		maven {
 			url "https://plugins.gradle.org/m2/"
 		}
@@ -48,10 +48,10 @@ buildscript {
 	dependencies {
 		// needed for syncSnapshot and syncStaging
 		classpath 'org.apache.maven.wagon:wagon-webdav-jackrabbit:2.9'
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
-		classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2'
-		classpath 'me.champeau.gradle:jmh-gradle-plugin:0.5.0'
-		classpath 'de.thetaphi:forbiddenapis:3.2'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.51.0'
+		classpath 'gradle.plugin.org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.12.2'
+		// JMH plugin disabled by default; enable via local project settings if needed
+		classpath 'de.thetaphi:forbiddenapis:3.6'
 		//classpath 'org.kordamp.gradle:jdeps-gradle-plugin:0.3.0'
 	}
 }
@@ -133,9 +133,7 @@ allprojects {
 		mavenCentral()
 	}
 
-	jacoco {
-		toolVersion = '0.8.7'
-	}
+	jacoco { toolVersion = '0.8.10' }
 }
 
 subprojects {
@@ -167,9 +165,10 @@ subprojects {
 	
 	forbiddenApis {
 		bundledSignatures = [
-			'jdk-unsafe-1.8',
-			'jdk-deprecated-1.8',
-			'jdk-internal-1.8',
+			// Use generic signatures to stay current across JDKs
+			'jdk-unsafe',
+			'jdk-deprecated',
+			'jdk-internal',
 			'jdk-non-portable',
 			//'jdk-system-out',
 			'jdk-reflection',
@@ -191,8 +190,15 @@ subprojects {
 	}
 	defaultTasks 'build', 'uploadPublished'
 
-	sourceCompatibility = globalSourceCompatibility
-	targetCompatibility = globalTargetCompatibility
+	// Ensure JDK 17 is used to compile and test
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(17)
+		}
+	}
+
+	tasks.withType(JavaCompile).configureEach { options.release = 17 }
+	tasks.withType(Test).configureEach { useJUnitPlatform() }
 
 	// -Xlint:-options disables the
 	// "warning: [options] bootstrap class path not set in conjunction with -source 1.x"
@@ -281,6 +287,8 @@ subprojects {
 			exclude group: 'org.codehaus.groovy', module: 'groovy-all' 
 		}
 		testRuntimeOnly libraries.'logback-classic'
+		// Enable running JUnit 4 tests on JUnit Platform
+		testRuntimeOnly libraries.'junit-vintage-engine'
 	}
 
 	publishing {
@@ -359,16 +367,15 @@ tasks.register('uploadPublished') {
 }
 
 project(':sulky-version') {
-    // override for sulky-version after subprojects
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    // Disable forbidden-apis on tests: test sources intentionally use deprecated SecurityManager APIs
+    tasks.matching { it.name == 'forbiddenApisTest' }.configureEach { enabled = false }
 }
 
 
 // source: https://gist.github.com/aalmiray/e6f54aa4b3803be0bcac
 task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
-	dependsOn = subprojects.jacocoTestReport
-	dependsOn = subprojects.test
+	dependsOn(subprojects.jacocoTestReport)
+	dependsOn(subprojects.test)
 	additionalSourceDirs.from(files(subprojects.sourceSets.main.allSource.srcDirs))
 	sourceDirectories.from(files(subprojects.sourceSets.main.allSource.srcDirs))
 	classDirectories.from(files(subprojects.sourceSets.main.output))
@@ -395,14 +402,11 @@ coveralls {
 }
 
 allprojects {
-	tasks.each { task ->
-		if (task instanceof Javadoc) {
-			//println task
-			if (JavaVersion.current().isJava10Compatible()) {
-				task.options.optionFiles << rootProject.file('config/javadoc10.options')
-			} else {
-				task.options.optionFiles << rootProject.file('config/javadoc.options')
-			}
+	tasks.withType(Javadoc).configureEach { task ->
+		if (JavaVersion.current().isJava10Compatible()) {
+			task.options.optionFiles << rootProject.file('config/javadoc10.options')
+		} else {
+			task.options.optionFiles << rootProject.file('config/javadoc.options')
 		}
 	}
 }

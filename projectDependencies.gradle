@@ -46,6 +46,7 @@ project(':sulky-junit') {
 		implementation libraries.'logback-classic'
 		implementation libraries.'logback-core'
 		implementation libraries.'slf4j-api'
+		testImplementation libraries.'junit-jupiter-api'
 	}
 }
 
@@ -315,13 +316,14 @@ project(':sulky-ulid') {
 		manifest.attributes 'Automatic-Module-Name': archivesBaseName
 	}
 
-	apply plugin: 'me.champeau.gradle.jmh'
-	
-	jmh {
-		fork = 2 // How many times to forks a single benchmark. Use 0 to disable forking altogether
-		iterations = 10 // Number of measurement iterations to do.
-		operationsPerInvocation = 1 // Operations per invocation.
-		jmhVersion = '1.17.4' // Specifies JMH version
+	if (project.hasProperty('enableJmh')) {
+		apply plugin: 'me.champeau.jmh'
+		jmh {
+			fork = 2
+			iterations = 10
+			operationsPerInvocation = 1
+			jmhVersion = '1.37'
+		}
 	}
 	
 	dependencies {

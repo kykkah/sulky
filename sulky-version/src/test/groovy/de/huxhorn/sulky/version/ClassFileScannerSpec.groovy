@@ -39,8 +39,7 @@ import de.huxhorn.sulky.version.mappers.HighestVersionMapper
 import de.huxhorn.sulky.version.mappers.PackageVersionMapper
 import de.huxhorn.sulky.version.mappers.SourceVersionMapper
 import org.apache.commons.io.FileUtils
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import spock.lang.TempDir
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -57,8 +56,8 @@ class ClassFileScannerSpec
     private static final String FOO_DIRECTORY_NAME = 'fooDirectory'
     private static final String SLF4J_DIRECTORY_NAME = 'slf4j-api'
 
-    @Rule
-    TemporaryFolder temporaryFolder
+    @TempDir
+    File temporaryFolder
 
     File slf4jApi179File
     File slf4jApi1710File
@@ -67,19 +66,21 @@ class ClassFileScannerSpec
     File unzippedSlf4jApiDirectory
 
     def setup() {
-        slf4jApi179File = temporaryFolder.newFile(SLF4J_API_179_JAR_NAME);
+        slf4jApi179File = new File(temporaryFolder, SLF4J_API_179_JAR_NAME)
         FileUtils.copyInputStreamToFile(this.class.getResourceAsStream('/'+SLF4J_API_179_JAR_NAME), slf4jApi179File)
 
-        slf4jApi1710File = temporaryFolder.newFile(SLF4J_API_1710_JAR_NAME);
+        slf4jApi1710File = new File(temporaryFolder, SLF4J_API_1710_JAR_NAME)
         FileUtils.copyInputStreamToFile(this.class.getResourceAsStream('/'+SLF4J_API_1710_JAR_NAME), slf4jApi1710File)
 
-        fooJarFile = temporaryFolder.newFile(FOO_JAR_NAME);
+        fooJarFile = new File(temporaryFolder, FOO_JAR_NAME)
         FileUtils.copyInputStreamToFile(this.class.getResourceAsStream('/'+FOO_JAR_NAME), fooJarFile)
 
-        unzippedFooDirectory = temporaryFolder.newFolder(FOO_DIRECTORY_NAME);
+        unzippedFooDirectory = new File(temporaryFolder, FOO_DIRECTORY_NAME)
+        unzippedFooDirectory.mkdirs()
         unzip(fooJarFile, unzippedFooDirectory)
 
-        unzippedSlf4jApiDirectory = temporaryFolder.newFolder(SLF4J_DIRECTORY_NAME);
+        unzippedSlf4jApiDirectory = new File(temporaryFolder, SLF4J_DIRECTORY_NAME)
+        unzippedSlf4jApiDirectory.mkdirs()
         unzip(slf4jApi1710File, unzippedSlf4jApiDirectory)
     }
 
