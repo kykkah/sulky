@@ -283,6 +283,7 @@ subprojects {
 		testImplementation libraries.'groovy'
 		testImplementation libraries.'junit'
 		testImplementation libraries.'junit-jupiter-api'
+		testImplementation libraries.'junit-jupiter-params'
 		testImplementation libraries.'slf4j-api'
 		testImplementation libraries.'spock-core', {
 			exclude group: 'org.codehaus.groovy', module: 'groovy-all' 

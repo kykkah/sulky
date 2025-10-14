@@ -29,3 +29,4 @@ project.ext.libraries = [
 project.ext.libraries['junit-vintage-engine'] = "org.junit.vintage:junit-vintage-engine:${versions.junitPlatform}"
 project.ext.libraries['junit-jupiter-api'] = "org.junit.jupiter:junit-jupiter-api:${versions.junitPlatform}"
 project.ext.libraries['junit-jupiter-engine'] = "org.junit.jupiter:junit-jupiter-engine:${versions.junitPlatform}"
+project.ext.libraries['junit-jupiter-params'] = "org.junit.jupiter:junit-jupiter-params:${versions.junitPlatform}"
