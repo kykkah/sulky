@@ -282,6 +282,7 @@ subprojects {
 		testImplementation libraries.'byte-buddy'
 		testImplementation libraries.'groovy'
 		testImplementation libraries.'junit'
+		testImplementation libraries.'junit-jupiter-api'
 		testImplementation libraries.'slf4j-api'
 		testImplementation libraries.'spock-core', {
 			exclude group: 'org.codehaus.groovy', module: 'groovy-all' 
@@ -289,6 +290,7 @@ subprojects {
 		testRuntimeOnly libraries.'logback-classic'
 		// Enable running JUnit 4 tests on JUnit Platform
 		testRuntimeOnly libraries.'junit-vintage-engine'
+		testRuntimeOnly libraries.'junit-jupiter-engine'
 	}
 
 	publishing {
