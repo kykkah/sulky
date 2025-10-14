@@ -34,6 +34,9 @@
 
 package de.huxhorn.sulky.version;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -52,41 +55,30 @@ class JavaVersionInitTest {
 	private static final String JAVA_VERSION = "java.version";
 	private static final String JAVA_SPEC_VERSION = "java.specification.version";
 
-	private final TestSecurityManager manager = new TestSecurityManager();
-
-	private SecurityManager originalSecurityManager;
-	private String originalJavaVersion;
-	private String originalJavaSpecificationVersion;
+	private StubPropertyProvider provider;
 
 	@BeforeAll
-	void installSecurityManager() {
-		originalSecurityManager = System.getSecurityManager();
-		originalJavaVersion = System.getProperty(JAVA_VERSION);
-		originalJavaSpecificationVersion = System.getProperty(JAVA_SPEC_VERSION);
-		System.setSecurityManager(manager);
+	void installPropertyProvider() {
+		provider = new StubPropertyProvider();
+		JavaVersion.setPropertyProvider(provider);
 	}
 
 	@AfterAll
-	void restoreSecurityManager() {
-		System.setSecurityManager(originalSecurityManager);
-		restoreProperty(JAVA_VERSION, originalJavaVersion);
-		restoreProperty(JAVA_SPEC_VERSION, originalJavaSpecificationVersion);
+	void restorePropertyProvider() {
+		JavaVersion.resetPropertyProvider();
 	}
 
 	@AfterEach
-	void resetManagerAndProperties() {
-		manager.setUnreadableProperties(null);
-		manager.setUnwritableProperties(null);
-		manager.setDeniedProperties(null);
-		restoreProperty(JAVA_VERSION, originalJavaVersion);
-		restoreProperty(JAVA_SPEC_VERSION, originalJavaSpecificationVersion);
+	void resetProviderState() {
+		provider.reset();
 	}
 
 	@Test
 	void noPropertyAccessFallsBackToMinimumVersion() {
-		manager.setUnreadableProperties(Set.of(JAVA_VERSION, JAVA_SPEC_VERSION));
-		System.setProperty(JAVA_VERSION, "1.6.1_25");
-		System.setProperty(JAVA_SPEC_VERSION, "1.6");
+		provider.setProperty(JAVA_VERSION, "1.6.1_25");
+		provider.setProperty(JAVA_SPEC_VERSION, "1.6");
+		provider.denyRead(JAVA_VERSION);
+		provider.denyRead(JAVA_SPEC_VERSION);
 
 		JavaVersion version = JavaVersion.getSystemJavaVersion();
 		assertEquals(YeOldeJavaVersion.MIN_VALUE, version);
@@ -94,9 +86,9 @@ class JavaVersionInitTest {
 
 	@Test
 	void fallbackToSpecificationVersion() {
-		manager.setUnreadableProperties(Set.of(JAVA_VERSION));
-		System.setProperty(JAVA_VERSION, "1.6.1_25");
-		System.setProperty(JAVA_SPEC_VERSION, "1.6");
+		provider.setProperty(JAVA_VERSION, "1.6.1_25");
+		provider.setProperty(JAVA_SPEC_VERSION, "1.6");
+		provider.denyRead(JAVA_VERSION);
 
 		JavaVersion version = JavaVersion.getSystemJavaVersion();
 		assertNotNull(version);
@@ -105,9 +97,8 @@ class JavaVersionInitTest {
 
 	@Test
 	void fullPropertyAccessUsesFullVersion() {
-		manager.setUnreadableProperties(null);
-		System.setProperty(JAVA_VERSION, "1.6.1_25");
-		System.setProperty(JAVA_SPEC_VERSION, "1.6");
+		provider.setProperty(JAVA_VERSION, "1.6.1_25");
+		provider.setProperty(JAVA_SPEC_VERSION, "1.6");
 
 		JavaVersion version = JavaVersion.getSystemJavaVersion();
 		assertNotNull(version);
@@ -116,9 +107,8 @@ class JavaVersionInitTest {
 
 	@Test
 	void brokenJavaVersionFallsBackToSpecification() {
-		manager.setUnreadableProperties(null);
-		System.setProperty(JAVA_VERSION, "1.6.x_25");
-		System.setProperty(JAVA_SPEC_VERSION, "1.6");
+		provider.setProperty(JAVA_VERSION, "1.6.x_25");
+		provider.setProperty(JAVA_SPEC_VERSION, "1.6");
 
 		JavaVersion version = JavaVersion.getSystemJavaVersion();
 		assertNotNull(version);
@@ -127,9 +117,8 @@ class JavaVersionInitTest {
 
 	@Test
 	void brokenJavaVersionAndSpecificationFallBackToMinimum() {
-		manager.setUnreadableProperties(null);
-		System.setProperty(JAVA_VERSION, "1.6.x_25");
-		System.setProperty(JAVA_SPEC_VERSION, "1.x");
+		provider.setProperty(JAVA_VERSION, "1.6.x_25");
+		provider.setProperty(JAVA_SPEC_VERSION, "1.x");
 
 		JavaVersion version = JavaVersion.getSystemJavaVersion();
 		assertEquals(YeOldeJavaVersion.MIN_VALUE, version);
@@ -137,9 +126,8 @@ class JavaVersionInitTest {
 
 	@Test
 	void missingJavaVersionFallsBackToSpecification() {
-		manager.setUnreadableProperties(null);
-		System.clearProperty(JAVA_VERSION);
-		System.setProperty(JAVA_SPEC_VERSION, "1.6");
+		provider.clearProperty(JAVA_VERSION);
+		provider.setProperty(JAVA_SPEC_VERSION, "1.6");
 
 		JavaVersion version = JavaVersion.getSystemJavaVersion();
 		assertNotNull(version);
@@ -148,9 +136,8 @@ class JavaVersionInitTest {
 
 	@Test
 	void missingJavaVersionAndSpecificationFallBackToMinimum() {
-		manager.setUnreadableProperties(null);
-		System.clearProperty(JAVA_VERSION);
-		System.clearProperty(JAVA_SPEC_VERSION);
+		provider.clearProperty(JAVA_VERSION);
+		provider.clearProperty(JAVA_SPEC_VERSION);
 
 		JavaVersion version = JavaVersion.getSystemJavaVersion();
 		assertEquals(YeOldeJavaVersion.MIN_VALUE, version);
@@ -158,9 +145,8 @@ class JavaVersionInitTest {
 
 	@Test
 	void minimalJep223VersionIsSupported() {
-		manager.setUnreadableProperties(null);
-		System.setProperty(JAVA_VERSION, "9");
-		System.setProperty(JAVA_SPEC_VERSION, "9");
+		provider.setProperty(JAVA_VERSION, "9");
+		provider.setProperty(JAVA_SPEC_VERSION, "9");
 
 		JavaVersion version = JavaVersion.getSystemJavaVersion();
 		assertNotNull(version);
@@ -169,19 +155,44 @@ class JavaVersionInitTest {
 
 	@Test
 	void ignoringPreReleaseIdentifier() {
-		manager.setUnreadableProperties(null);
-		System.setProperty(JAVA_VERSION, "1.8.0_66-internal");
-		System.setProperty(JAVA_SPEC_VERSION, "1.8");
+		provider.setProperty(JAVA_VERSION, "1.8.0_66-internal");
+		provider.setProperty(JAVA_SPEC_VERSION, "1.8");
 
 		assertTrue(JavaVersion.isAtLeast("1.8.0_66", true));
 		assertFalse(JavaVersion.isAtLeast("1.8.0_66", false));
 	}
 
-	private static void restoreProperty(String name, String value) {
-		if (value == null) {
-			System.clearProperty(name);
-		} else {
-			System.setProperty(name, value);
+	private static final class StubPropertyProvider implements JavaVersion.PropertyProvider {
+		private final Map<String, String> properties = new HashMap<>();
+		private final Set<String> deniedReads = new HashSet<>();
+
+		@Override
+		public String getProperty(String name) {
+			if(deniedReads.contains(name)) {
+				throw new SecurityException("Access denied for property " + name);
+			}
+			return properties.get(name);
+		}
+
+		void setProperty(String name, String value) {
+			if(value == null) {
+				properties.remove(name);
+			} else {
+				properties.put(name, value);
+			}
+		}
+
+		void clearProperty(String name) {
+			properties.remove(name);
+		}
+
+		void denyRead(String name) {
+			deniedReads.add(name);
+		}
+
+		void reset() {
+			properties.clear();
+			deniedReads.clear();
 		}
 	}
 }

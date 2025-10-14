@@ -369,12 +369,6 @@ tasks.register('uploadPublished') {
 	dependsOn subprojects.collect { "${it.path}:uploadPublished" }
 }
 
-project(':sulky-version') {
-    // Disable forbidden-apis on tests: test sources intentionally use deprecated SecurityManager APIs
-    tasks.matching { it.name == 'forbiddenApisTest' }.configureEach { enabled = false }
-}
-
-
 // source: https://gist.github.com/aalmiray/e6f54aa4b3803be0bcac
 task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 	dependsOn(subprojects.jacocoTestReport)

@@ -35,6 +35,7 @@
 package de.huxhorn.sulky.version;
 
 import java.util.Comparator;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * This class handles parsing and comparison of
@@ -66,6 +67,24 @@ public abstract class JavaVersion
 	 */
 	private static final String JAVA_SPECIFICATION_VERSION_PROPERTY_NAME = "java.specification.version";
 
+	private static final PropertyProvider DEFAULT_PROPERTY_PROVIDER = System::getProperty;
+	private static final AtomicReference<PropertyProvider> PROPERTY_PROVIDER = new AtomicReference<>(DEFAULT_PROPERTY_PROVIDER);
+
+	static void setPropertyProvider(PropertyProvider provider)
+	{
+		PROPERTY_PROVIDER.set(provider == null ? DEFAULT_PROPERTY_PROVIDER : provider);
+	}
+
+	static void resetPropertyProvider()
+	{
+		PROPERTY_PROVIDER.set(DEFAULT_PROPERTY_PROVIDER);
+	}
+
+	private static PropertyProvider propertyProvider()
+	{
+		return PROPERTY_PROVIDER.get();
+	}
+
 	/**
 	 * The best possible approximation to the JVM JavaVersion.
 	 *
@@ -76,7 +95,7 @@ public abstract class JavaVersion
 		JavaVersion version=null;
 		try
 		{
-			String versionString = System.getProperty(JAVA_VERSION_PROPERTY_NAME);
+			String versionString = propertyProvider().getProperty(JAVA_VERSION_PROPERTY_NAME);
 			if(versionString != null)
 			{
 				version = parse(versionString);
@@ -97,7 +116,7 @@ public abstract class JavaVersion
 			// fall back to specification version
 			try
 			{
-				String versionString = System.getProperty(JAVA_SPECIFICATION_VERSION_PROPERTY_NAME);
+				String versionString = propertyProvider().getProperty(JAVA_SPECIFICATION_VERSION_PROPERTY_NAME);
 				if(versionString != null)
 				{
 					version = parse(versionString);
@@ -362,5 +381,11 @@ public abstract class JavaVersion
 			throw new ClassCastException("Unexpected JavaVersion of class "+o1.getClass().getName()+"!");
 		}
 	};
+
+	@FunctionalInterface
+	interface PropertyProvider
+	{
+		String getProperty(String name);
+	}
 
 }
