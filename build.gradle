@@ -2,7 +2,7 @@ apply from: 'dependencyDefinitions.gradle'
 apply from: 'projectDependencies.gradle'
 
 wrapper {
-	gradleVersion = '7.6'
+	gradleVersion = '8.4'
 }
 
 def globalSourceCompatibility = '17'
@@ -74,12 +74,12 @@ task javadocAll(type: Javadoc) {
 }
 
 task sourceZip(type: Zip) {
-	classifier = 'sources'
+	archiveClassifier.set('sources')
 	from { subprojects.collect { it.sourceSets.main.allSource } }
 }
 
 task javadocZip(type: Zip) {
-	classifier = 'javadoc'
+	archiveClassifier.set('javadoc')
 	from javadocAll.outputs.files
 }
 
@@ -134,6 +134,14 @@ allprojects {
 	}
 
 	jacoco { toolVersion = '0.8.10' }
+
+	tasks.withType(Javadoc).configureEach { task ->
+		if (JavaVersion.current().isJava10Compatible()) {
+			task.options.optionFiles << rootProject.file('config/javadoc10.options')
+		} else {
+			task.options.optionFiles << rootProject.file('config/javadoc.options')
+		}
+	}
 }
 
 subprojects {
@@ -183,9 +191,9 @@ subprojects {
 		sourceDirectories.from(files(sourceSets.main.allSource.srcDirs))
 		classDirectories.from(files(sourceSets.main.output))
 		reports {
-			html.enabled = true
-			xml.enabled = true
-			csv.enabled = false
+			html.required.set(true)
+			xml.required.set(true)
+			csv.required.set(false)
 		}
 	}
 	defaultTasks 'build', 'uploadPublished'
@@ -217,8 +225,14 @@ subprojects {
 	compileGroovy.options.encoding = sourceEncoding
 	compileTestGroovy.options.encoding = sourceEncoding
 
-	task sourceJar(type: Jar) { from sourceSets.main.allSource; classifier = 'sources' }
-	task javadocJar(type: Jar) { from javadoc.outputs.files; classifier = 'javadoc' }
+	task sourceJar(type: Jar) {
+		from sourceSets.main.allSource
+		archiveClassifier.set('sources')
+	}
+	task javadocJar(type: Jar) {
+		from javadoc.outputs.files
+		archiveClassifier.set('javadoc')
+	}
 
 	artifacts { archives sourceJar, javadocJar }
 
@@ -378,10 +392,10 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 	classDirectories.from(files(subprojects.sourceSets.main.output))
 	executionData.from(files(subprojects.jacocoTestReport.executionData))
 	reports {
-		html.enabled = true
-		xml.enabled = true
-		xml.destination file("${buildDir}/reports/jacoco/report.xml")
-		csv.enabled = false
+		html.required.set(true)
+		xml.required.set(true)
+		xml.outputLocation.set(file("${buildDir}/reports/jacoco/report.xml"))
+		csv.required.set(false)
 	}
 	onlyIf = {
 		true
@@ -396,16 +410,6 @@ task jacocoRootReport(type: org.gradle.testing.jacoco.tasks.JacocoReport) {
 coveralls {
 	jacocoReportPath = "${buildDir}/reports/jacoco/report.xml"
 	sourceDirs += jacocoRootReport.sourceDirectories
-}
-
-allprojects {
-	tasks.withType(Javadoc).configureEach { task ->
-		if (JavaVersion.current().isJava10Compatible()) {
-			task.options.optionFiles << rootProject.file('config/javadoc10.options')
-		} else {
-			task.options.optionFiles << rootProject.file('config/javadoc.options')
-		}
-	}
 }
 
 project.ext.deleteClosure = {
