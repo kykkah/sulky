@@ -21,6 +21,7 @@ import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.plugins.BasePluginExtension
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 
@@ -101,8 +102,9 @@ public class DetectSplitPackagesTask extends DefaultTask {
 			projects.add(project)
 			if(!commonName.equals(project.jar.manifest.getAttributes().get('Automatic-Module-Name'))) {
 				correct = false
-				if(!commonName.equals(project.archivesBaseName)) {
-					println "!!! ${project}\t${project.archivesBaseName}\t${commonName}"
+				def archiveName = archivesName(project)
+				if(!commonName.equals(archiveName)) {
+					println "!!! ${project}\t${archiveName}\t${commonName}"
 				} else {
 					println "${project}\t${commonName}"
 				}
@@ -123,6 +125,11 @@ public class DetectSplitPackagesTask extends DefaultTask {
 		if(correct) {
 			println 'Everything is fine.'
 		}
+	}
+
+	private static String archivesName(Project project) {
+		def baseExtension = project.extensions.findByType(BasePluginExtension)
+		return baseExtension?.archivesName?.getOrNull()
 	}
 	
 	private Map<String, Set<String>> doDetectSplitPackages() {

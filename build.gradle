@@ -2,7 +2,7 @@ apply from: 'dependencyDefinitions.gradle'
 apply from: 'projectDependencies.gradle'
 
 wrapper {
-	gradleVersion = '8.4'
+	gradleVersion = '8.14.3'
 }
 
 def globalSourceCompatibility = '17'
@@ -35,13 +35,13 @@ buildscript {
 	project.ext.localSnapshotRepo = localSnapshotRepoFile.toURL().toString()
 	repositories {
 		maven {
-			url "https://plugins.gradle.org/m2/"
+			url = uri("https://plugins.gradle.org/m2/")
 		}
 		maven {
-			url localReleaseRepo
+			url = uri(localReleaseRepo)
 		}
 		maven {
-			url localSnapshotRepo
+			url = uri(localSnapshotRepo)
 		}
 		mavenCentral()
 	}
@@ -125,10 +125,10 @@ allprojects {
 
 	repositories {
 		maven {
-			url localReleaseRepo
+			url = uri(localReleaseRepo)
 		}
 		maven {
-			url localSnapshotRepo
+			url = uri(localSnapshotRepo)
 		}
 		mavenCentral()
 	}

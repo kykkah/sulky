@@ -6,11 +6,12 @@ subprojects {
 }
 
 project(':sulky-io') {
-	archivesBaseName = 'de.huxhorn.sulky.io'
+	def archiveName = 'de.huxhorn.sulky.io'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It\'s supposed to contain classes I\'d like to see in commons-io. At the moment it only contains a TimeoutOutputStream that throws an IOException if a certain timeout is exceeded.'
 	
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -19,11 +20,12 @@ project(':sulky-io') {
 }
 
 project(':sulky-generics') {
-	archivesBaseName = 'de.huxhorn.sulky.generics'
+	def archiveName = 'de.huxhorn.sulky.generics'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains several interfaces that use generics. There\'s a general definition of Serializer/Deserializer and a simple implementation using object serialization.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -31,13 +33,14 @@ project(':sulky-generics') {
 }
 
 project(':sulky-junit') {
-	archivesBaseName = 'de.huxhorn.sulky.junit'
+	def archiveName = 'de.huxhorn.sulky.junit'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains JUnit utilities.'
 
 	/*
 	logback-classic-1.2.3 jdeps failure
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 	*/
 
@@ -51,11 +54,12 @@ project(':sulky-junit') {
 }
 
 project(':sulky-version') {
-	archivesBaseName = 'de.huxhorn.sulky.version'
+	def archiveName = 'de.huxhorn.sulky.version'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains java version handling stuff.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -65,11 +69,12 @@ project(':sulky-version') {
 }
 
 project(':sulky-codec') {
-	archivesBaseName = 'de.huxhorn.sulky.codec'
+	def archiveName = 'de.huxhorn.sulky.codec'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -78,11 +83,12 @@ project(':sulky-codec') {
 }
 
 project(':sulky-buffers') {
-	archivesBaseName = 'de.huxhorn.sulky.buffers'
+	def archiveName = 'de.huxhorn.sulky.buffers'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains the definition of buffers, operations on buffers and certain buffer implementations.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -91,11 +97,12 @@ project(':sulky-buffers') {
 }
 
 project(':sulky-codec-filebuffer') {
-	archivesBaseName = 'de.huxhorn.sulky.codec.filebuffer'
+	def archiveName = 'de.huxhorn.sulky.codec.filebuffer'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains a Codec-aware filebuffer.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	javadoc {
@@ -116,11 +123,12 @@ project(':sulky-codec-filebuffer') {
 }
 
 project(':sulky-stax') {
-	archivesBaseName = 'de.huxhorn.sulky.stax'
+	def archiveName = 'de.huxhorn.sulky.stax'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains helper methods to simplify usage of StAX.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -129,16 +137,17 @@ project(':sulky-stax') {
 }
 
 project(':sulky-conditions') {
-	archivesBaseName = 'de.huxhorn.sulky.conditions'
+	def archiveName = 'de.huxhorn.sulky.conditions'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains the definition of conditions and the implementation of some purpose conditions.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 }
 
 project(':sulky-sounds-api') {
-	archivesBaseName = 'de.huxhorn.sulky.sounds-api'
+	base { archivesName = 'de.huxhorn.sulky.sounds-api' }
 	description = 'This file is part of the sulky modules. It contains a simple sound interface definition.'
 
 	jar {
@@ -147,7 +156,7 @@ project(':sulky-sounds-api') {
 }
 
 project(':sulky-sounds-impl-jlayer') {
-	archivesBaseName = 'de.huxhorn.sulky.sounds-impl-jlayer'
+	base { archivesName = 'de.huxhorn.sulky.sounds-impl-jlayer' }
 	description = 'This file is part of the sulky modules. It contains an implementation of the simple sound interface using JLayer.'
 
 	jar {
@@ -162,11 +171,12 @@ project(':sulky-sounds-impl-jlayer') {
 }
 
 project(':sulky-logging') {
-	archivesBaseName = 'de.huxhorn.sulky.logging'
+	def archiveName = 'de.huxhorn.sulky.logging'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains a LoggingPropertyChangeListener and some Swing logging.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -176,11 +186,12 @@ project(':sulky-logging') {
 }
 
 project(':sulky-formatting') {
-	archivesBaseName = 'de.huxhorn.sulky.formatting'
+	def archiveName = 'de.huxhorn.sulky.formatting'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains a class for human-readable output of large numbers and some handy xml helper methods.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -189,11 +200,12 @@ project(':sulky-formatting') {
 }
 
 project(':sulky-swing') {
-	archivesBaseName = 'de.huxhorn.sulky.swing'
+	def archiveName = 'de.huxhorn.sulky.swing'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains several Swing tools.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -204,11 +216,12 @@ project(':sulky-swing') {
 }
 
 project(':sulky-buffers-table') {
-	archivesBaseName = 'de.huxhorn.sulky.buffers.table'
+	def archiveName = 'de.huxhorn.sulky.buffers.table'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains a TableModel using Buffer as backend.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -219,11 +232,12 @@ project(':sulky-buffers-table') {
 }
 
 project(':sulky-tasks') {
-	archivesBaseName = 'de.huxhorn.sulky.tasks'
+	def archiveName = 'de.huxhorn.sulky.tasks'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains a TaskManager and support classes.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -232,11 +246,12 @@ project(':sulky-tasks') {
 }
 
 project(':sulky-buffers-filtering') {
-	archivesBaseName = 'de.huxhorn.sulky.buffers.filtering'
+	def archiveName = 'de.huxhorn.sulky.buffers.filtering'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains the definition of buffers, operations on buffers and certain buffer implementations.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -248,11 +263,12 @@ project(':sulky-buffers-filtering') {
 }
 
 project(':sulky-resources') {
-	archivesBaseName = 'de.huxhorn.sulky.resources'
+	def archiveName = 'de.huxhorn.sulky.resources'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains support for inheritance-safe resource resolution.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -261,11 +277,12 @@ project(':sulky-resources') {
 }
 
 project(':sulky-blobs') {
-	archivesBaseName = 'de.huxhorn.sulky.blobs'
+	def archiveName = 'de.huxhorn.sulky.blobs'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains a BLOB repository comparable to the way git is storing the files.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -276,11 +293,12 @@ project(':sulky-blobs') {
 }
 
 project(':sulky-plist') {
-	archivesBaseName = 'de.huxhorn.sulky.plist'
+	def archiveName = 'de.huxhorn.sulky.plist'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains classes to read and write Apple Propertylist/Plist data.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -293,11 +311,12 @@ project(':sulky-plist') {
 }
 
 project(':sulky-groovy') {
-	archivesBaseName = 'de.huxhorn.sulky.groovy'
+	def archiveName = 'de.huxhorn.sulky.groovy'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains Groovy helpers.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	dependencies {
@@ -309,11 +328,12 @@ project(':sulky-groovy') {
 }
 
 project(':sulky-ulid') {
-	archivesBaseName = 'de.huxhorn.sulky.ulid'
+	def archiveName = 'de.huxhorn.sulky.ulid'
+	base { archivesName = archiveName }
 	description = 'This file is part of the sulky modules. It contains a ULID implementation.'
 
 	jar {
-		manifest.attributes 'Automatic-Module-Name': archivesBaseName
+		manifest.attributes 'Automatic-Module-Name': archiveName
 	}
 
 	if (project.hasProperty('enableJmh')) {
