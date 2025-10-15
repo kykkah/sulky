@@ -26,8 +26,6 @@ idea {
 	}
 }
 
-import org.gradle.plugins.signing.Sign
-
 buildscript {
 	project.ext.localReleaseRepoFile = new File("${System.properties.'user.home'}/local-gradle-repository/release")
 	project.ext.localSnapshotRepoFile = new File("${System.properties.'user.home'}/local-gradle-repository/snapshot")
@@ -90,7 +88,8 @@ signing {
 }
 
 gradle.taskGraph.whenReady { taskGraph ->
-	if(taskGraph.allTasks.any { it instanceof Sign && it.required }) {
+	def signTaskType = Class.forName('org.gradle.plugins.signing.Sign')
+	if(taskGraph.allTasks.any { signTaskType.isInstance(it) && it.required }) {
 		String pgpPassword = System.properties.'pgpPassword'
 		if(!pgpPassword) {
 			throw new IllegalStateException('Set pgpPassword system property!')
