@@ -1,6 +1,7 @@
-build
-.gradle
-target
+build/
+bin/
+.gradle/
+target/
 .DS_Store
 .idea
 *.iml

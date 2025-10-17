@@ -2,7 +2,11 @@ apply from: 'dependencyDefinitions.gradle'
 apply from: 'projectDependencies.gradle'
 
 wrapper {
-	gradleVersion = '8.14.3'
+	gradleVersion = '8.13'
+}
+
+tasks.named("updateDaemonJvm") {
+	languageVersion = JavaLanguageVersion.of(17)
 }
 
 def globalSourceCompatibility = '17'
