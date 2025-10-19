@@ -50,7 +50,7 @@ buildscript {
 	dependencies {
 		// needed for syncSnapshot and syncStaging
 		classpath 'org.apache.maven.wagon:wagon-webdav-jackrabbit:2.9'
-		classpath 'com.github.ben-manes:gradle-versions-plugin:0.51.0'
+		classpath 'com.github.ben-manes:gradle-versions-plugin:0.53.0'
 		classpath 'gradle.plugin.org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.12.2'
 		// JMH plugin disabled by default; enable via local project settings if needed
 		classpath 'de.thetaphi:forbiddenapis:3.6'
@@ -63,10 +63,8 @@ apply plugin: 'base'
 apply plugin: 'signing'
 apply plugin: 'com.github.kt3k.coveralls' // see https://github.com/kt3k/coveralls-gradle-plugin
 
-task javadocAll(type: Javadoc) {
-	destinationDir = file("$buildDir/javadocAll")
-	source = files { subprojects.collect { it.sourceSets.main.java } }
-	classpath = files { subprojects.collect { it.sourceSets.main.compileClasspath } }
+def javadocAll = tasks.register('javadocAll', Javadoc) {
+	destinationDir = layout.buildDirectory.dir("javadocAll").get().asFile
 	// disable doclint for protobuf
 	// http://blog.joda.org/2014/02/turning-off-doclint-in-jdk-8-javadoc.html
 	// https://github.com/google/protobuf/issues/304
@@ -80,14 +78,15 @@ task sourceZip(type: Zip) {
 	from { subprojects.collect { it.sourceSets.main.allSource } }
 }
 
-task javadocZip(type: Zip) {
+def javadocZip = tasks.register('javadocZip', Zip) {
 	archiveClassifier.set('javadoc')
-	from javadocAll.outputs.files
+	dependsOn(javadocAll)
+	from(javadocAll.map { task -> task.destinationDir })
 }
 
 signing {
 	required = { !version.endsWith("SNAPSHOT") }
-	sign javadocZip
+	sign(javadocZip.get())
 	sign sourceZip
 }
 
@@ -155,6 +154,17 @@ subprojects {
 	apply plugin: 'checkstyle'
 	apply plugin: 'pmd'
 	//apply plugin: 'org.kordamp.jdeps'
+
+	plugins.withType(JavaPlugin) {
+		def sourceSets = project.extensions.getByType(SourceSetContainer)
+		def mainSourceSet = sourceSets.named('main')
+
+		javadocAll.configure { aggregate ->
+			aggregate.source(mainSourceSet.map { it.allJava })
+			aggregate.classpath.from(project.provider { mainSourceSet.get().compileClasspath })
+			aggregate.classpath.from(project.provider { mainSourceSet.get().output })
+		}
+	}
 	
 	checkstyle {
 		configFile = rootProject.file('config/checkstyle/checkstyle.xml')
