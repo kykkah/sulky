@@ -7,7 +7,7 @@ subprojects {
 
 project(':sulky-io') {
 	def archiveName = 'de.huxhorn.sulky.io'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It\'s supposed to contain classes I\'d like to see in commons-io. At the moment it only contains a TimeoutOutputStream that throws an IOException if a certain timeout is exceeded.'
 	
 	jar {
@@ -21,7 +21,7 @@ project(':sulky-io') {
 
 project(':sulky-generics') {
 	def archiveName = 'de.huxhorn.sulky.generics'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains several interfaces that use generics. There\'s a general definition of Serializer/Deserializer and a simple implementation using object serialization.'
 
 	jar {
@@ -34,7 +34,7 @@ project(':sulky-generics') {
 
 project(':sulky-junit') {
 	def archiveName = 'de.huxhorn.sulky.junit'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains JUnit utilities.'
 
 	/*
@@ -55,7 +55,7 @@ project(':sulky-junit') {
 
 project(':sulky-version') {
 	def archiveName = 'de.huxhorn.sulky.version'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains java version handling stuff.'
 
 	jar {
@@ -70,7 +70,7 @@ project(':sulky-version') {
 
 project(':sulky-codec') {
 	def archiveName = 'de.huxhorn.sulky.codec'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules.'
 
 	jar {
@@ -84,7 +84,7 @@ project(':sulky-codec') {
 
 project(':sulky-buffers') {
 	def archiveName = 'de.huxhorn.sulky.buffers'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains the definition of buffers, operations on buffers and certain buffer implementations.'
 
 	jar {
@@ -98,7 +98,7 @@ project(':sulky-buffers') {
 
 project(':sulky-codec-filebuffer') {
 	def archiveName = 'de.huxhorn.sulky.codec.filebuffer'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains a Codec-aware filebuffer.'
 
 	jar {
@@ -124,7 +124,7 @@ project(':sulky-codec-filebuffer') {
 
 project(':sulky-stax') {
 	def archiveName = 'de.huxhorn.sulky.stax'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains helper methods to simplify usage of StAX.'
 
 	jar {
@@ -138,7 +138,7 @@ project(':sulky-stax') {
 
 project(':sulky-conditions') {
 	def archiveName = 'de.huxhorn.sulky.conditions'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains the definition of conditions and the implementation of some purpose conditions.'
 
 	jar {
@@ -147,7 +147,7 @@ project(':sulky-conditions') {
 }
 
 project(':sulky-sounds-api') {
-	base { archivesName = 'de.huxhorn.sulky.sounds-api' }
+	base { archivesName.set('de.huxhorn.sulky.sounds-api') }
 	description = 'This file is part of the sulky modules. It contains a simple sound interface definition.'
 
 	jar {
@@ -156,7 +156,7 @@ project(':sulky-sounds-api') {
 }
 
 project(':sulky-sounds-impl-jlayer') {
-	base { archivesName = 'de.huxhorn.sulky.sounds-impl-jlayer' }
+	base { archivesName.set('de.huxhorn.sulky.sounds-impl-jlayer') }
 	description = 'This file is part of the sulky modules. It contains an implementation of the simple sound interface using JLayer.'
 
 	jar {
@@ -172,7 +172,7 @@ project(':sulky-sounds-impl-jlayer') {
 
 project(':sulky-logging') {
 	def archiveName = 'de.huxhorn.sulky.logging'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains a LoggingPropertyChangeListener and some Swing logging.'
 
 	jar {
@@ -187,7 +187,7 @@ project(':sulky-logging') {
 
 project(':sulky-formatting') {
 	def archiveName = 'de.huxhorn.sulky.formatting'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains a class for human-readable output of large numbers and some handy xml helper methods.'
 
 	jar {
@@ -201,7 +201,7 @@ project(':sulky-formatting') {
 
 project(':sulky-swing') {
 	def archiveName = 'de.huxhorn.sulky.swing'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains several Swing tools.'
 
 	jar {
@@ -217,7 +217,7 @@ project(':sulky-swing') {
 
 project(':sulky-buffers-table') {
 	def archiveName = 'de.huxhorn.sulky.buffers.table'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains a TableModel using Buffer as backend.'
 
 	jar {
@@ -233,7 +233,7 @@ project(':sulky-buffers-table') {
 
 project(':sulky-tasks') {
 	def archiveName = 'de.huxhorn.sulky.tasks'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains a TaskManager and support classes.'
 
 	jar {
@@ -247,7 +247,7 @@ project(':sulky-tasks') {
 
 project(':sulky-buffers-filtering') {
 	def archiveName = 'de.huxhorn.sulky.buffers.filtering'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains the definition of buffers, operations on buffers and certain buffer implementations.'
 
 	jar {
@@ -264,7 +264,7 @@ project(':sulky-buffers-filtering') {
 
 project(':sulky-resources') {
 	def archiveName = 'de.huxhorn.sulky.resources'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains support for inheritance-safe resource resolution.'
 
 	jar {
@@ -278,7 +278,7 @@ project(':sulky-resources') {
 
 project(':sulky-blobs') {
 	def archiveName = 'de.huxhorn.sulky.blobs'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains a BLOB repository comparable to the way git is storing the files.'
 
 	jar {
@@ -294,7 +294,7 @@ project(':sulky-blobs') {
 
 project(':sulky-plist') {
 	def archiveName = 'de.huxhorn.sulky.plist'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains classes to read and write Apple Propertylist/Plist data.'
 
 	jar {
@@ -312,7 +312,7 @@ project(':sulky-plist') {
 
 project(':sulky-groovy') {
 	def archiveName = 'de.huxhorn.sulky.groovy'
-	base { archivesName = archiveName }
+	base { archivesName.set(archiveName) }
 	description = 'This file is part of the sulky modules. It contains Groovy helpers.'
 
 	jar {

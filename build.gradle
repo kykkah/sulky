@@ -53,15 +53,22 @@ buildscript {
 		classpath 'com.github.ben-manes:gradle-versions-plugin:0.53.0'
 		classpath 'gradle.plugin.org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.12.2'
 		// JMH plugin disabled by default; enable via local project settings if needed
-		classpath 'de.thetaphi:forbiddenapis:3.6'
+		classpath 'de.thetaphi:forbiddenapis:3.10'
 		//classpath 'org.kordamp.gradle:jdeps-gradle-plugin:0.3.0'
 	}
 }
 
-apply plugin: 'com.github.ben-manes.versions'
 apply plugin: 'base'
 apply plugin: 'signing'
 apply plugin: 'com.github.kt3k.coveralls' // see https://github.com/kt3k/coveralls-gradle-plugin
+
+def requestedTasks = gradle.startParameter.taskNames
+def wantsDependencyUpdates = requestedTasks.any { taskName ->
+	taskName == 'dependencyUpdates' || taskName.endsWith(':dependencyUpdates')
+}
+if (wantsDependencyUpdates) {
+	apply plugin: 'com.github.ben-manes.versions'
+}
 
 def javadocAll = tasks.register('javadocAll', Javadoc) {
 	destinationDir = layout.buildDirectory.dir("javadocAll").get().asFile
