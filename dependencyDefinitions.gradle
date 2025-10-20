@@ -16,7 +16,6 @@ project.ext.libraries = [
 'groovy':                 "org.apache.groovy:groovy:${versions.groovy}",
 'jcl-over-slf4j':         "org.slf4j:jcl-over-slf4j:${versions.slf4j}",
 'jlayer':                 'de.huxhorn.sulky:de.huxhorn.sulky.3rdparty.jlayer:1.0',
-'junit':                  'junit:junit:4.13.2',
 'logback-access':         "ch.qos.logback:logback-access:${versions.logback}",
 'logback-classic':        "ch.qos.logback:logback-classic:${versions.logback}",
 'logback-core':           "ch.qos.logback:logback-core:${versions.logback}",
@@ -26,7 +25,6 @@ project.ext.libraries = [
 ]
 
 // Optional test engines (used when running JUnit 4 tests on JUnit Platform)
-project.ext.libraries['junit-vintage-engine'] = "org.junit.vintage:junit-vintage-engine:${versions.junitPlatform}"
 project.ext.libraries['junit-jupiter-api'] = "org.junit.jupiter:junit-jupiter-api:${versions.junitPlatform}"
 project.ext.libraries['junit-jupiter-engine'] = "org.junit.jupiter:junit-jupiter-engine:${versions.junitPlatform}"
 project.ext.libraries['junit-jupiter-params'] = "org.junit.jupiter:junit-jupiter-params:${versions.junitPlatform}"

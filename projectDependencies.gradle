@@ -45,7 +45,6 @@ project(':sulky-junit') {
 	*/
 
 	dependencies {
-		implementation libraries.'junit'
 		implementation libraries.'junit-jupiter-api'
 		implementation libraries.'logback-classic'
 		implementation libraries.'logback-core'
