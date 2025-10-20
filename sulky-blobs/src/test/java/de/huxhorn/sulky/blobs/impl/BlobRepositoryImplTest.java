@@ -35,28 +35,30 @@
 package de.huxhorn.sulky.blobs.impl;
 
 import de.huxhorn.sulky.blobs.AmbiguousIdException;
+import de.huxhorn.sulky.junit.LoggingTest;
 import de.huxhorn.sulky.junit.LoggingTestBase;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 import java.util.Set;
 import org.apache.commons.io.IOUtils;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.io.TempDir;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class BlobRepositoryImplTest
 	extends LoggingTestBase
@@ -64,18 +66,25 @@ public class BlobRepositoryImplTest
 	private static final String FOO = "foo";
 	private final Logger logger = LoggerFactory.getLogger(BlobRepositoryImplTest.class);
 
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
+	@TempDir
+	Path tempDir;
 	private static final String TEST_DATA = "Foo\nBar";
 	private static final String TEST_DATA_ID = "a044399675c6f9d097735c6eb2075d18f5e3cc56";
 	private static final String WRONG_DATA_ID = "a044399675c6f9d097735c6eb2075d18f5e3cc17";
 
-	public BlobRepositoryImplTest(Boolean logging)
+	private File newFolder(String prefix)
+		throws IOException
 	{
-		super(logging);
+		return Files.createTempDirectory(tempDir, prefix).toFile();
 	}
 
-	@Test
+	private File newFile(String prefix)
+		throws IOException
+	{
+		return Files.createTempFile(tempDir, prefix, null).toFile();
+	}
+
+	@LoggingTest
 	public void caseSensitiveHandling()
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
@@ -85,7 +94,7 @@ public class BlobRepositoryImplTest
 		assertFalse(instance.isCaseSensitive());
 	}
 
-	@Test
+	@LoggingTest
 	public void validatingHandling()
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
@@ -96,21 +105,21 @@ public class BlobRepositoryImplTest
 
 	}
 
-	@Test
+	@LoggingTest
 	public void put() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		String id=instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 		assertEquals(TEST_DATA_ID, id);
 	}
 
-	@Test
+	@LoggingTest
 	public void putDuplicate() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		String id=instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 		assertEquals(TEST_DATA_ID, id);
@@ -118,11 +127,11 @@ public class BlobRepositoryImplTest
 		assertEquals(id, otherId);
 	}
 
-	@Test
+	@LoggingTest
 	public void putHashClash() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		File baseDirectory = folder.newFolder(FOO);
+		File baseDirectory = newFolder(FOO);
 		instance.setBaseDirectory(baseDirectory);
 
 		File dataParent = new File(baseDirectory, TEST_DATA_ID.substring(0,2));
@@ -140,22 +149,22 @@ public class BlobRepositoryImplTest
 		assertNull(id);
 	}
 
-	@Test
+	@LoggingTest
 	public void putContains() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		assertFalse(instance.contains(TEST_DATA_ID));
 		instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 		assertTrue(instance.contains(TEST_DATA_ID));
 	}
 
-	@Test
+	@LoggingTest
 	public void containsAmbiguous() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		File baseDirectory = folder.newFolder(FOO);
+		File baseDirectory = newFolder(FOO);
 		instance.setBaseDirectory(baseDirectory);
 		File dataParent = new File(baseDirectory, "aa");
 		if(!dataParent.mkdirs())
@@ -186,11 +195,11 @@ public class BlobRepositoryImplTest
 		assertTrue(instance.contains(TEST_DATA_ID));
 	}
 
-	@Test
+	@LoggingTest
 	public void putGet() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		try(InputStream is = instance.get(instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8))))
 		{
@@ -198,11 +207,11 @@ public class BlobRepositoryImplTest
 		}
 	}
 
-	@Test
+	@LoggingTest
 	public void putGetCaseSensitive() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 		String id = instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 		id = id.toUpperCase(Locale.US);
 		assertNull(instance.get(id));
@@ -216,12 +225,12 @@ public class BlobRepositoryImplTest
 		}
 	}
 
-	@Test
+	@LoggingTest
 	public void validating() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
 		instance.setValidating(true);
-		File baseDirectory = folder.newFolder(FOO);
+		File baseDirectory = newFolder(FOO);
 		instance.setBaseDirectory(baseDirectory);
 		String id = instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 
@@ -242,11 +251,11 @@ public class BlobRepositoryImplTest
 		assertFalse(instance.contains(WRONG_DATA_ID));
 	}
 
-	@Test
+	@LoggingTest
 	public void putGetIncomplete() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		String id=instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 		assertEquals(TEST_DATA_ID, id);
@@ -257,50 +266,50 @@ public class BlobRepositoryImplTest
 		}
 	}
 
-	@Test
+	@LoggingTest
 	public void getMissing() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		assertNull(instance.get(TEST_DATA_ID));
 	}
 
-	@Test
+	@LoggingTest
 	public void size() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 
 		assertEquals(7,instance.sizeOf(TEST_DATA_ID));
 	}
 
-	@Test
+	@LoggingTest
 	public void sizeMissing() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		assertEquals(-1,instance.sizeOf(TEST_DATA_ID));
 	}
 
-	@Test
+	@LoggingTest
 	public void emptyIdSet()
 		throws IOException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		assertEquals(0, instance.idSet().size());
 	}
 
-	@Test
+	@LoggingTest
 	public void putIdSet() throws IOException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		String id=instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 		assertEquals(TEST_DATA_ID, id);
@@ -316,11 +325,11 @@ public class BlobRepositoryImplTest
 		assertTrue(idSet.contains(barId));
 	}
 
-	@Test
+	@LoggingTest
 	public void putDeleteContains() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		File baseDirectory = folder.newFolder(FOO);
+		File baseDirectory = newFolder(FOO);
 		instance.setBaseDirectory(baseDirectory);
 
 		String id=instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
@@ -334,11 +343,11 @@ public class BlobRepositoryImplTest
 		assertFalse(instance.delete(TEST_DATA_ID));
 	}
 
-	@Test
+	@LoggingTest
 	public void putDeleteIdSet() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
 		String id=instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 		assertEquals(TEST_DATA_ID, id);
@@ -356,173 +365,172 @@ public class BlobRepositoryImplTest
 		assertTrue(idSet.contains(barId));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@LoggingTest
 	public void containsNull() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
-		instance.contains(null);
+		assertThrows(IllegalArgumentException.class, () -> instance.contains(null));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@LoggingTest
 	public void getNull() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
-		instance.get(null);
+		assertThrows(IllegalArgumentException.class, () -> instance.get(null));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@LoggingTest
 	public void deleteNull() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
-		instance.delete(null);
+		assertThrows(IllegalArgumentException.class, () -> instance.delete(null));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@LoggingTest
 	public void sizeOfNull() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
-		instance.sizeOf(null);
+		assertThrows(IllegalArgumentException.class, () -> instance.sizeOf(null));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@LoggingTest
 	public void putEmptyByteArray() throws IOException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
-		instance.put(new byte[0]);
+		assertThrows(IllegalArgumentException.class, () -> instance.put(new byte[0]));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@LoggingTest
 	public void putEmptyStream() throws IOException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
-		instance.put(new ByteArrayInputStream(new byte[0]));
+		assertThrows(IllegalArgumentException.class, () -> instance.put(new ByteArrayInputStream(new byte[0])));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@LoggingTest
 	public void putNullByteArray() throws IOException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
-		instance.put((byte[])null);
+		assertThrows(IllegalArgumentException.class, () -> instance.put((byte[]) null));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@LoggingTest
 	public void putNullStream() throws IOException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFolder(FOO));
+		instance.setBaseDirectory(newFolder(FOO));
 
-		instance.put((InputStream)null);
+		assertThrows(IllegalArgumentException.class, () -> instance.put((InputStream) null));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@LoggingTest
 	public void misconfigurationPut() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
 
-		instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
+		assertThrows(IllegalStateException.class, () -> instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8)));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@LoggingTest
 	public void misconfigurationGet() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
 
-		instance.get(TEST_DATA_ID);
+		assertThrows(IllegalStateException.class, () -> instance.get(TEST_DATA_ID));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@LoggingTest
 	public void misconfigurationSize() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
 
-		instance.sizeOf(TEST_DATA_ID);
+		assertThrows(IllegalStateException.class, () -> instance.sizeOf(TEST_DATA_ID));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@LoggingTest
 	public void misconfigurationContains() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
 
-		instance.contains(TEST_DATA_ID);
+		assertThrows(IllegalStateException.class, () -> instance.contains(TEST_DATA_ID));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@LoggingTest
 	public void misconfigurationIdSet() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
 
-		instance.idSet();
+		assertThrows(IllegalStateException.class, instance::idSet);
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@LoggingTest
 	public void misconfigurationFile() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		instance.setBaseDirectory(folder.newFile(FOO));
-
-		instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
+		File nonDirectory = newFile(FOO);
+		assertThrows(IllegalStateException.class, () -> instance.setBaseDirectory(nonDirectory));
 	}
 
-	@Test
+	@LoggingTest
 	public void baseDirectory()
 		throws IOException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		File baseDirectory=folder.newFolder(FOO);
+		File baseDirectory=newFolder(FOO);
 		instance.setBaseDirectory(baseDirectory);
 		assertEquals(baseDirectory, instance.getBaseDirectory());
 	}
 
 	@SuppressWarnings({"ResultOfMethodCallIgnored"})
-	@Test
+	@LoggingTest
 	public void missingBaseDirectory()
 		throws IOException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		File baseDirectory=folder.newFolder(FOO);
+		File baseDirectory=newFolder(FOO);
 		baseDirectory.delete();
 		instance.setBaseDirectory(baseDirectory);
 		assertEquals(baseDirectory, instance.getBaseDirectory());
 	}
 
-	@Test (expected = IllegalArgumentException.class)
+	@LoggingTest
 	public void nullId() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		File baseDirectory=folder.newFolder(FOO);
+		File baseDirectory=newFolder(FOO);
 		instance.setBaseDirectory(baseDirectory);
-		instance.get(null);
+		assertThrows(IllegalArgumentException.class, () -> instance.get(null));
 	}
 
-	@Test (expected = IllegalArgumentException.class)
+	@LoggingTest
 	public void shortId() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		File baseDirectory=folder.newFolder(FOO);
+		File baseDirectory=newFolder(FOO);
 		instance.setBaseDirectory(baseDirectory);
-		instance.get("a");
+		assertThrows(IllegalArgumentException.class, () -> instance.get("a"));
 	}
 
 	@SuppressWarnings({"ResultOfMethodCallIgnored"})
-	@Test
+	@LoggingTest
 	public void junkFiles() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		File baseDirectory=folder.newFolder(FOO);
+		File baseDirectory=newFolder(FOO);
 		instance.setBaseDirectory(baseDirectory);
 		String id=instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 		assertEquals(TEST_DATA_ID, id);
@@ -537,11 +545,11 @@ public class BlobRepositoryImplTest
 		assertTrue(idSet.contains(TEST_DATA_ID));
 	}
 
-	@Test
+	@LoggingTest
 	public void keepDir() throws IOException, AmbiguousIdException
 	{
 		BlobRepositoryImpl instance=new BlobRepositoryImpl();
-		File baseDirectory=folder.newFolder(FOO);
+		File baseDirectory=newFolder(FOO);
 		instance.setBaseDirectory(baseDirectory);
 		String id=instance.put(TEST_DATA.getBytes(StandardCharsets.UTF_8));
 		assertEquals(TEST_DATA_ID, id);
@@ -558,17 +566,17 @@ public class BlobRepositoryImplTest
 	}
 
 	@SuppressWarnings({"ResultOfMethodCallIgnored"})
-	@Test(expected = IllegalStateException.class)
+	@LoggingTest
     public void brokenBaseDirectory()
 		throws IOException
     {
         BlobRepositoryImpl instance=new BlobRepositoryImpl();
-        File readonlyBaseDirectory = folder.newFolder(FOO);
+        File readonlyBaseDirectory = newFolder(FOO);
         readonlyBaseDirectory.setWritable(false, false);
         File baseDirectory=new File(readonlyBaseDirectory, "bar");
 		// lets check if creating baseDirectory actually fails...
 		assumeTrue(!baseDirectory.mkdirs());
 		if(logger.isInfoEnabled()) logger.info("Actually executing brokenBaseDirectory test...");
-        instance.setBaseDirectory(baseDirectory);
+        assertThrows(IllegalStateException.class, () -> instance.setBaseDirectory(baseDirectory));
     }
 }

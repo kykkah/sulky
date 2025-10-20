@@ -34,11 +34,12 @@
 
 package de.huxhorn.sulky.blobs;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AmbiguousIdExceptionTest
 {
@@ -54,9 +55,9 @@ public class AmbiguousIdExceptionTest
 	}
 
 	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
-	@Test (expected = IllegalArgumentException.class)
+	@Test
 	public void error()
 	{
-		new AmbiguousIdException("id", null);
+		assertThrows(IllegalArgumentException.class, () -> new AmbiguousIdException("id", null));
 	}
 }

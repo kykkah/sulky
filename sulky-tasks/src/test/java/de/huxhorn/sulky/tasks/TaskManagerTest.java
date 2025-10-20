@@ -43,18 +43,19 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TaskManagerTest
 {
@@ -63,13 +64,13 @@ public class TaskManagerTest
 	private TaskManager<Integer> instance;
 	private String taskName;
 
-	@BeforeClass
+	@BeforeAll
 	public static void enableHeadless()
 	{
 		System.setProperty("java.awt.headless", "true");
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp()
 	{
 		Toolkit tk = Toolkit.getDefaultToolkit();
@@ -78,7 +79,7 @@ public class TaskManagerTest
 		taskName = "TaskName";
 	}
 
-	@After
+	@AfterEach
 	public void shutDown()
 	{
 		if(instance.getState() == TaskManager.State.RUNNING)
@@ -87,10 +88,10 @@ public class TaskManagerTest
 		}
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void notRunning()
 	{
-		instance.startTask(() -> null, "Won't work");
+		assertThrows(IllegalStateException.class, () -> instance.startTask(() -> null, "Won't work"));
 	}
 
 	@Test
@@ -114,40 +115,38 @@ public class TaskManagerTest
 		instance.shutDown();
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void startUpTwice()
 	{
 		instance.startUp();
-		instance.startUp();
+		assertThrows(IllegalStateException.class, instance::startUp);
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void restart()
 	{
 		instance.startUp();
 		instance.shutDown();
-		instance.startUp();
+		assertThrows(IllegalStateException.class, instance::startUp);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void missingName()
 	{
 		instance.startUp();
-		instance.startTask(() -> null, null);
+		assertThrows(IllegalArgumentException.class, () -> instance.startTask(() -> null, null));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void missingExecutor()
 	{
-		//noinspection ConstantConditions
-		new TaskManager(null);
+		assertThrows(IllegalArgumentException.class, () -> new TaskManager(null));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void missingExecutor2()
 	{
-		//noinspection ConstantConditions
-		new TaskManager(null, true);
+		assertThrows(IllegalArgumentException.class, () -> new TaskManager(null, true));
 	}
 
 	@Test
