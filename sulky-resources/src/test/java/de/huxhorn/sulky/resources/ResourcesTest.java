@@ -38,9 +38,9 @@ import de.huxhorn.sulky.resources.junit.Foobar;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Locale;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,9 +48,9 @@ import static de.huxhorn.sulky.resources.ResourceTestHelper.assertResultEndsWith
 import static de.huxhorn.sulky.resources.ResourceTestHelper.logResult;
 import static de.huxhorn.sulky.resources.ResourceTestHelper.logResults;
 import static de.huxhorn.sulky.resources.ResourceTestHelper.appendSuffixes;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 @SuppressWarnings("PMD.CloseResource")
 public class ResourcesTest
@@ -78,13 +78,13 @@ public class ResourcesTest
 		URL[] result;
 		result = Resources.getLocalResources(clazz, resourceBaseName, suffixes, locale);
 		logResults(logger, methodCall, result);
-		assertEquals(methodCall + " - Number of results", resultEndsWith.length, result.length);
+		assertEquals(resultEndsWith.length, result.length, methodCall + " - Number of results");
 
 		for(int i = 0; i < result.length; i++)
 		{
 			String cur = result[i].toString();
 			String msg = methodCall + " - resultUrls[" + i + "]:\"" + cur + "\" does not end with \"" + resultEndsWith[i] + "\"!";
-			assertTrue(msg, cur.endsWith(resultEndsWith[i]));
+			assertTrue(cur.endsWith(resultEndsWith[i]), msg);
 		}
 
 		if(locale == null)
@@ -100,13 +100,13 @@ public class ResourcesTest
 			if(logger.isInfoEnabled()) logger.info("Testing shortcut {}.", methodCall);
 			result = Resources.getLocalResources(clazz, resourceBaseName, suffixes);
 			logResults(logger, methodCall, result);
-			assertEquals(methodCall + " - Number of results", resultEndsWith.length, result.length);
+			assertEquals(resultEndsWith.length, result.length, methodCall + " - Number of results");
 
 			for(int i = 0; i < result.length; i++)
 			{
 				String cur = result[i].toString();
 				String msg = methodCall + " - resultUrls[" + i + "]:\"" + cur + "\" does not end with \"" + resultEndsWith[i] + "\"!";
-				assertTrue(msg, cur.endsWith(resultEndsWith[i]));
+				assertTrue(cur.endsWith(resultEndsWith[i]), msg);
 			}
 			if(suffixes == null || suffixes.length == 0 || (suffixes.length == 1 && suffixes[0].length() == 0))
 			{
@@ -119,13 +119,13 @@ public class ResourcesTest
 				if(logger.isInfoEnabled()) logger.info("Testing shortcut {}.", methodCall);
 				result = Resources.getLocalResources(clazz, resourceBaseName);
 				logResults(logger, methodCall, result);
-				assertEquals(methodCall + " - Number of results", resultEndsWith.length, result.length);
+				assertEquals(resultEndsWith.length, result.length, methodCall + " - Number of results");
 
 				for(int i = 0; i < result.length; i++)
 				{
 					String cur = result[i].toString();
 					String msg = methodCall + " - resultUrls[" + i + "]:\"" + cur + "\" does not end with \"" + resultEndsWith[i] + "\"!";
-					assertTrue(msg, cur.endsWith(resultEndsWith[i]));
+					assertTrue(cur.endsWith(resultEndsWith[i]), msg);
 				}
 			} // if no suffixes
 		} // if locale == null
@@ -141,13 +141,13 @@ public class ResourcesTest
 			if(logger.isInfoEnabled()) logger.info("Testing shortcut {}.", methodCall);
 			result = Resources.getLocalResources(clazz, resourceBaseName, locale);
 			logResults(logger, methodCall, result);
-			assertEquals(methodCall + " - Number of results", resultEndsWith.length, result.length);
+			assertEquals(resultEndsWith.length, result.length, methodCall + " - Number of results");
 
 			for(int i = 0; i < result.length; i++)
 			{
 				String cur = result[i].toString();
 				String msg = methodCall + " - resultUrls[" + i + "]:\"" + cur + "\" does not end with \"" + resultEndsWith[i] + "\"!";
-				assertTrue(msg, cur.endsWith(resultEndsWith[i]));
+				assertTrue(cur.endsWith(resultEndsWith[i]), msg);
 			}
 		} // if no suffixes but locale
 	}
@@ -324,13 +324,13 @@ public class ResourcesTest
 		URL[] result;
 		result = Resources.getResources(clazz, resourceBaseName, suffixes, locale);
 		logResults(logger, methodCall, result);
-		assertEquals(methodCall + " - Number of results", resultEndsWith.length, result.length);
+		assertEquals(resultEndsWith.length, result.length, methodCall + " - Number of results");
 
 		for(int i = 0; i < result.length; i++)
 		{
 			String cur = result[i].toString();
 			String msg = methodCall + " - resultUrls[" + i + "]:\"" + cur + "\" does not end with \"" + resultEndsWith[i] + "\"!";
-			assertTrue(msg, cur.endsWith(resultEndsWith[i]));
+			assertTrue(cur.endsWith(resultEndsWith[i]), msg);
 		}
 
 		if(locale == null)
@@ -346,13 +346,13 @@ public class ResourcesTest
 			if(logger.isInfoEnabled()) logger.info("Testing shortcut {}.", methodCall);
 			result = Resources.getResources(clazz, resourceBaseName, suffixes);
 			logResults(logger, methodCall, result);
-			assertEquals(methodCall + " - Number of results", resultEndsWith.length, result.length);
+			assertEquals(resultEndsWith.length, result.length, methodCall + " - Number of results");
 
 			for(int i = 0; i < result.length; i++)
 			{
 				String cur = result[i].toString();
 				String msg = methodCall + " - resultUrls[" + i + "]:\"" + cur + "\" does not end with \"" + resultEndsWith[i] + "\"!";
-				assertTrue(msg, cur.endsWith(resultEndsWith[i]));
+				assertTrue(cur.endsWith(resultEndsWith[i]), msg);
 			}
 			if(suffixes == null || suffixes.length == 0 || (suffixes.length == 1 && suffixes[0].length() == 0))
 			{
@@ -365,13 +365,13 @@ public class ResourcesTest
 				if(logger.isInfoEnabled()) logger.info("Testing shortcut {}.", methodCall);
 				result = Resources.getResources(clazz, resourceBaseName);
 				logResults(logger, methodCall, result);
-				assertEquals(methodCall + " - Number of results", resultEndsWith.length, result.length);
+				assertEquals(resultEndsWith.length, result.length, methodCall + " - Number of results");
 
 				for(int i = 0; i < result.length; i++)
 				{
 					String cur = result[i].toString();
 					String msg = methodCall + " - resultUrls[" + i + "]:\"" + cur + "\" does not end with \"" + resultEndsWith[i] + "\"!";
-					assertTrue(msg, cur.endsWith(resultEndsWith[i]));
+					assertTrue(cur.endsWith(resultEndsWith[i]), msg);
 				}
 			} // if no suffixes
 		} // if locale == null
@@ -387,13 +387,13 @@ public class ResourcesTest
 			if(logger.isInfoEnabled()) logger.info("Testing shortcut {}.", methodCall);
 			result = Resources.getResources(clazz, resourceBaseName, locale);
 			logResults(logger, methodCall, result);
-			assertEquals(methodCall + " - Number of results", resultEndsWith.length, result.length);
+			assertEquals(resultEndsWith.length, result.length, methodCall + " - Number of results");
 
 			for(int i = 0; i < result.length; i++)
 			{
 				String cur = result[i].toString();
 				String msg = methodCall + " - resultUrls[" + i + "]:\"" + cur + "\" does not end with \"" + resultEndsWith[i] + "\"!";
-				assertTrue(msg, cur.endsWith(resultEndsWith[i]));
+				assertTrue(cur.endsWith(resultEndsWith[i]), msg);
 			}
 		} // if no suffixes but locale
 	}
@@ -560,10 +560,10 @@ public class ResourcesTest
 	{
 		String methodCall = "getLocaleSuffixArray(" + locale + ")";
 		String[] result = Resources.getLocaleSuffixArray(locale);
-		assertEquals(methodCall + " - Number of Suffixes", expectedResults.length, result.length);
+		assertEquals(expectedResults.length, result.length, methodCall + " - Number of Suffixes");
 		for(int i = 0; i < expectedResults.length; i++)
 		{
-			assertEquals(methodCall + " - Wrong suffix at index #" + i, expectedResults[i], result[i]);
+			assertEquals(expectedResults[i], result[i], methodCall + " - Wrong suffix at index #" + i);
 		}
 	}
 
@@ -571,14 +571,14 @@ public class ResourcesTest
 	{
 		String methodCall = "getSingleLocaleSuffixArray(" + locale + ")";
 		String[] result = Resources.getSingleLocaleSuffixArray(locale);
-		assertEquals(methodCall + " - Number of Suffixes", expectedResults.length, result.length);
+		assertEquals(expectedResults.length, result.length, methodCall + " - Number of Suffixes");
 		for(int i = 0; i < expectedResults.length; i++)
 		{
-			assertEquals(methodCall + " - Wrong suffix at index #" + i, expectedResults[i], result[i]);
+			assertEquals(expectedResults[i], result[i], methodCall + " - Wrong suffix at index #" + i);
 		}
 	}
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass()
 		throws Exception
 	{
@@ -586,7 +586,7 @@ public class ResourcesTest
 		Locale.setDefault(US_LOCALE);
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass()
 		throws Exception
 	{

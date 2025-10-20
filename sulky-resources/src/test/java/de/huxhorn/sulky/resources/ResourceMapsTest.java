@@ -37,11 +37,11 @@ package de.huxhorn.sulky.resources;
 import de.huxhorn.sulky.resources.junit.Foobar;
 import java.util.Locale;
 import java.util.Map;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ResourceMapsTest
 {
@@ -55,24 +55,24 @@ public class ResourceMapsTest
 		Map<String, Object> result;
 
 		result = ResourceMaps.getResourceMap(clazz, resourceBaseName, locale);
-		assertEquals("Number of elements", expectedResults.length, result.size());
+		assertEquals(expectedResults.length, result.size(), "Number of elements");
 		for(String[] kv : expectedResults)
 		{
 			// kv[0]=key, kv[1]=value
 			String key = kv[0];
 			String cur = (String) result.get(key);
-			assertEquals("Property \"" + key + "\"", kv[1], cur);
+			assertEquals(kv[1], cur, "Property \"" + key + "\"");
 		}
 		if(locale == null)
 		{
 			result = ResourceMaps.getResourceMap(clazz, resourceBaseName);
-			assertEquals("Number of elements", expectedResults.length, result.size());
+			assertEquals(expectedResults.length, result.size(), "Number of elements");
 			for(String[] kv : expectedResults)
 			{
 				// kv[0]=key, kv[1]=value
 				String key = kv[0];
 				String cur = (String) result.get(key);
-				assertEquals("Property \"" + key + "\"", kv[1], cur);
+				assertEquals(kv[1], cur, "Property \"" + key + "\"");
 			}
 		}
 	}
@@ -81,29 +81,29 @@ public class ResourceMapsTest
 	{
 		Map result;
 		result = ResourceMaps.getLocalResourceMap(clazz, resourceBaseName, locale);
-		assertEquals("Number of elements", expectedResults.length, result.size());
+		assertEquals(expectedResults.length, result.size(), "Number of elements");
 		for(String[] kv : expectedResults)
 		{
 			// kv[0]=key, kv[1]=value
 			String key = kv[0];
 			String cur = (String) result.get(key);
-			assertEquals("Property \"" + key + "\"", kv[1], cur);
+			assertEquals(kv[1], cur, "Property \"" + key + "\"");
 		}
 		if(locale == null)
 		{
 			result = ResourceMaps.getLocalResourceMap(clazz, resourceBaseName);
-			assertEquals("Number of elements", expectedResults.length, result.size());
+			assertEquals(expectedResults.length, result.size(), "Number of elements");
 			for(String[] kv : expectedResults)
 			{
 				// kv[0]=key, kv[1]=value
 				String key = kv[0];
 				String cur = (String) result.get(key);
-				assertEquals("Property \"" + key + "\"", kv[1], cur);
+				assertEquals(kv[1], cur, "Property \"" + key + "\"");
 			}
 		}
 	}
 
-	@BeforeClass
+	@BeforeAll
 	public static void beforeClass()
 		throws Exception
 	{
@@ -111,7 +111,7 @@ public class ResourceMapsTest
 		Locale.setDefault(US_LOCALE);
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void afterClass()
 		throws Exception
 	{

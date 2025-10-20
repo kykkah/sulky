@@ -37,8 +37,8 @@ package de.huxhorn.sulky.resources;
 import java.net.URL;
 import org.slf4j.Logger;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 final class ResourceTestHelper
 {
@@ -96,7 +96,7 @@ final class ResourceTestHelper
 		{
 			String cur = result.toString();
 			String msg = methodCall + " - resultUrl:\"" + cur + "\" does not end with \"" + resultEndsWith + "\"!";
-			assertTrue(msg, cur.endsWith(resultEndsWith));
+			assertTrue(cur.endsWith(resultEndsWith), msg);
 		}
 	}
 }

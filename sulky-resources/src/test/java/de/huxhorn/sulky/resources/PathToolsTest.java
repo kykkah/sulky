@@ -35,11 +35,11 @@
 package de.huxhorn.sulky.resources;
 
 import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class PathToolsTest
@@ -50,41 +50,41 @@ public class PathToolsTest
 	{
 		String result = PathTools.resolvePath(basePath, path);
 		String methodCall = "resolvePath(\"" + basePath + "\", \"" + path + "\")";
-		assertEquals(methodCall, expectedResult, result);
+		assertEquals(expectedResult, result, methodCall);
 	}
 
 	private void internalEvaluatePath(String path, String expectedResult)
 	{
 		String result = PathTools.evaluatePath(path);
-		assertEquals("evaluatePath(\"" + path + "\")", expectedResult, result);
+		assertEquals(expectedResult, result, "evaluatePath(\"" + path + "\")");
 	}
 
 	private void internalGetAbsolutePath(String basePath, String path, String expectedResult)
 	{
 		String result = PathTools.getAbsolutePath(basePath, path);
-		assertEquals("getAbsolutePath(\"" + basePath + "\", \"" + path + "\")", expectedResult, result);
+		assertEquals(expectedResult, result, "getAbsolutePath(\"" + basePath + "\", \"" + path + "\")");
 	}
 
 	private void internalGetParentPath(String path, String expectedResult)
 	{
 		String result = PathTools.getParentPath(path);
-		assertEquals("getParentPath(\"" + path + "\")", expectedResult, result);
+		assertEquals(expectedResult, result, "getParentPath(\"" + path + "\")");
 	}
 
 	private void internalGetCompatiblePath(String path, String expectedResult)
 	{
 		String result = PathTools.getCompatiblePath(path);
-		assertEquals("getCompatiblePath(\"" + path + "\")", expectedResult, result);
+		assertEquals(expectedResult, result, "getCompatiblePath(\"" + path + "\")");
 	}
 
 	private void internalGetPathStack(String path, boolean reduce, String[] expectedPathElements)
 	{
 		List<String> stack = PathTools.getPathStack(path, reduce);
 		String methodCall = "getPathStack(\"" + path + "\", " + reduce + ");";
-		assertEquals(methodCall + " - Number of Stack-Elements", expectedPathElements.length, stack.size());
+		assertEquals(expectedPathElements.length, stack.size(), methodCall + " - Number of Stack-Elements");
 		for(int i = 0; i < expectedPathElements.length; i++)
 		{
-			assertEquals(methodCall + " - Mismatch at Index #" + i, expectedPathElements[i], stack.get(i));
+			assertEquals(expectedPathElements[i], stack.get(i), methodCall + " - Mismatch at Index #" + i);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class PathToolsTest
 	{
 		String pathString = PathTools.getPathStackString(PathTools.getPathStack(path, reduce));
 		String methodCall = "getPathStackString(getPathStack(\"" + path + "\", " + reduce + "));";
-		assertEquals(methodCall + " - ", expectedPathString, pathString);
+		assertEquals(expectedPathString, pathString, methodCall + " - ");
 	}
 
 	@Test

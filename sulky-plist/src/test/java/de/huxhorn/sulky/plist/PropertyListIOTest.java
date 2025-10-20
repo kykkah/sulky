@@ -43,14 +43,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PropertyListIOTest
 {
@@ -59,7 +59,7 @@ public class PropertyListIOTest
 	private PropertyListEncoder encoder;
 	private PropertyListDecoder decoder;
 
-	@Before
+	@BeforeEach
 	public void createInstances()
 	{
 		encoder=new PropertyListEncoder();
@@ -271,7 +271,7 @@ public class PropertyListIOTest
 		{
 			float v1=value[i];
 			float v2=readValues.get(i).floatValue();
-			assertTrue("Index "+i+" differs!", Float.compare(v1, v2)==0); // NOPMD
+			assertTrue(Float.compare(v1, v2)==0, "Index "+i+" differs!"); // NOPMD
 		}
 	}
 

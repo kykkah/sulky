@@ -37,15 +37,15 @@ package de.huxhorn.sulky.buffers;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class OverwritingCircularBufferTest
 {
@@ -54,7 +54,7 @@ public class OverwritingCircularBufferTest
 	private static final int TEST_BUFFER_SIZE = 5;
 	private OverwritingCircularBuffer<Long> instance;
 
-	@Before
+	@BeforeEach
 	public void setUp()
 		throws Exception
 	{
@@ -64,13 +64,13 @@ public class OverwritingCircularBufferTest
 	@Test
 	public void empty()
 	{
-		assertTrue("Instance is not empty!", instance.isEmpty());
-		assertFalse("Instance is full!", instance.isFull());
-		assertEquals("Size doesn't match!", 0, instance.getAvailableElements());
-		assertEquals("getBufferSize doesn't match!", TEST_BUFFER_SIZE, instance.getBufferSize());
-		assertEquals("overflowCounter doesn't match!", 0, instance.getOverflowCounter());
+		assertTrue(instance.isEmpty(), "Instance is not empty!");
+		assertFalse(instance.isFull(), "Instance is full!");
+		assertEquals(0, instance.getAvailableElements(), "Size doesn't match!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getBufferSize(), "getBufferSize doesn't match!");
+		assertEquals(0, instance.getOverflowCounter(), "overflowCounter doesn't match!");
 		Iterator<Long> iterator = instance.iterator();
-		assertFalse("iterator has next!", iterator.hasNext());
+		assertFalse(iterator.hasNext(), "iterator has next!");
 	}
 
 	@Test
@@ -78,21 +78,21 @@ public class OverwritingCircularBufferTest
 	{
 		instance.add((long) 1);
 
-		assertFalse("Instance is empty!", instance.isEmpty());
-		assertFalse("Instance is full!", instance.isFull());
-		assertEquals("Size doesn't match!", 1, instance.getAvailableElements());
-		assertEquals("getBufferSize doesn't match!", TEST_BUFFER_SIZE, instance.getBufferSize());
-		assertEquals("overflowCounter doesn't match!", 0, instance.getOverflowCounter());
+		assertFalse(instance.isEmpty(), "Instance is empty!");
+		assertFalse(instance.isFull(), "Instance is full!");
+		assertEquals(1, instance.getAvailableElements(), "Size doesn't match!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getBufferSize(), "getBufferSize doesn't match!");
+		assertEquals(0, instance.getOverflowCounter(), "overflowCounter doesn't match!");
 		Iterator<Long> iterator = instance.iterator();
-		assertTrue("iterator doesn't have next!", iterator.hasNext());
+		assertTrue(iterator.hasNext(), "iterator doesn't have next!");
 		Long element = iterator.next();
 		Long getRelativeValue = instance.getRelative(0);
 		Long getValue = instance.get(0);
 		if(logger.isInfoEnabled()) logger.info("Element #{}: iterValue={}, getRelativeValue={}, getValue={}", 0, element, getRelativeValue, getValue);
 
-		assertEquals("Unexpected value returned by iterator!", (Long) (long) 1, element);
-		assertEquals("Iterator and getRelative values differ!", element, getRelativeValue);
-		assertEquals("Iterator and get values differ!", element, getValue);
+		assertEquals((Long) (long) 1, element, "Unexpected value returned by iterator!");
+		assertEquals(element, getRelativeValue, "Iterator and getRelative values differ!");
+		assertEquals(element, getValue, "Iterator and get values differ!");
 	}
 
 	@Test
@@ -103,13 +103,13 @@ public class OverwritingCircularBufferTest
 			instance.add((long) i);
 		}
 
-		assertFalse("Instance is empty!", instance.isEmpty());
-		assertFalse("Instance is full!", instance.isFull());
-		assertEquals("Size doesn't match!", TEST_BUFFER_SIZE - 1, instance.getAvailableElements());
-		assertEquals("getBufferSize doesn't match!", TEST_BUFFER_SIZE, instance.getBufferSize());
-		assertEquals("overflowCounter doesn't match!", 0, instance.getOverflowCounter());
+		assertFalse(instance.isEmpty(), "Instance is empty!");
+		assertFalse(instance.isFull(), "Instance is full!");
+		assertEquals(TEST_BUFFER_SIZE - 1, instance.getAvailableElements(), "Size doesn't match!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getBufferSize(), "getBufferSize doesn't match!");
+		assertEquals(0, instance.getOverflowCounter(), "overflowCounter doesn't match!");
 		Iterator<Long> iterator = instance.iterator();
-		assertTrue("iterator doesn't have next!", iterator.hasNext());
+		assertTrue(iterator.hasNext(), "iterator doesn't have next!");
 		for(int i = 0; i < TEST_BUFFER_SIZE - 1; i++)
 		{
 			Long element = iterator.next();
@@ -117,9 +117,9 @@ public class OverwritingCircularBufferTest
 			Long getValue = instance.get(i);
 			if(logger.isInfoEnabled()) logger.info("Element #{}: iterValue={}, getRelativeValue={}", i, element, getRelativeValue);
 
-			assertEquals("Unexpected value returned by iterator!", (Long) (long) i, element);
-			assertEquals("Iterator and getRelative values differ!", element, getRelativeValue);
-			assertEquals("Iterator and get values differ!", element, getValue);
+			assertEquals((Long) (long) i, element, "Unexpected value returned by iterator!");
+			assertEquals(element, getRelativeValue, "Iterator and getRelative values differ!");
+			assertEquals(element, getValue, "Iterator and get values differ!");
 		}
 	}
 
@@ -131,13 +131,13 @@ public class OverwritingCircularBufferTest
 			instance.add((long) i);
 		}
 
-		assertFalse("Instance is empty!", instance.isEmpty());
-		assertTrue("Instance isn't full!", instance.isFull());
-		assertEquals("Size doesn't match!", TEST_BUFFER_SIZE, instance.getAvailableElements());
-		assertEquals("getBufferSize doesn't match!", TEST_BUFFER_SIZE, instance.getBufferSize());
-		assertEquals("overflowCounter doesn't match!", 0, instance.getOverflowCounter());
+		assertFalse(instance.isEmpty(), "Instance is empty!");
+		assertTrue(instance.isFull(), "Instance isn't full!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getAvailableElements(), "Size doesn't match!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getBufferSize(), "getBufferSize doesn't match!");
+		assertEquals(0, instance.getOverflowCounter(), "overflowCounter doesn't match!");
 		Iterator<Long> iterator = instance.iterator();
-		assertTrue("iterator doesn't have next!", iterator.hasNext());
+		assertTrue(iterator.hasNext(), "iterator doesn't have next!");
 		for(int i = 0; i < TEST_BUFFER_SIZE; i++)
 		{
 			Long element = iterator.next();
@@ -145,9 +145,9 @@ public class OverwritingCircularBufferTest
 			Long getValue = instance.get(i);
 			if(logger.isInfoEnabled()) logger.info("Element #{}: iterValue={}, getRelativeValue={}", i, element, getRelativeValue);
 
-			assertEquals("Unexpected value returned by iterator!", (Long) (long) i, element);
-			assertEquals("Iterator and getRelative values differ!", element, getRelativeValue);
-			assertEquals("Iterator and get values differ!", element, getValue);
+			assertEquals((Long) (long) i, element, "Unexpected value returned by iterator!");
+			assertEquals(element, getRelativeValue, "Iterator and getRelative values differ!");
+			assertEquals(element, getValue, "Iterator and get values differ!");
 		}
 	}
 
@@ -160,14 +160,14 @@ public class OverwritingCircularBufferTest
 		}
 		instance.add((long) TEST_BUFFER_SIZE);
 
-		assertFalse("Instance is empty!", instance.isEmpty());
-		assertTrue("Instance isn't full!", instance.isFull());
-		assertEquals("Size doesn't match!", TEST_BUFFER_SIZE, instance.getAvailableElements());
-		assertEquals("getBufferSize doesn't match!", TEST_BUFFER_SIZE, instance.getBufferSize());
+		assertFalse(instance.isEmpty(), "Instance is empty!");
+		assertTrue(instance.isFull(), "Instance isn't full!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getAvailableElements(), "Size doesn't match!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getBufferSize(), "getBufferSize doesn't match!");
 		long overflowCounter = instance.getOverflowCounter();
-		assertEquals("overflowCounter doesn't match!", 1, overflowCounter);
+		assertEquals(1, overflowCounter, "overflowCounter doesn't match!");
 		Iterator<Long> iterator = instance.iterator();
-		assertTrue("iterator doesn't have next!", iterator.hasNext());
+		assertTrue(iterator.hasNext(), "iterator doesn't have next!");
 		for(int i = 0; i < TEST_BUFFER_SIZE; i++)
 		{
 			Long element = iterator.next();
@@ -175,9 +175,9 @@ public class OverwritingCircularBufferTest
 			Long getValue = instance.get(i + overflowCounter);
 			if(logger.isInfoEnabled()) logger.info("Element #{}: iterValue={}, getRelativeValue={}", i, element, getRelativeValue);
 
-			assertEquals("Unexpected value returned by iterator!", (Long) (long) (i + 1), element);
-			assertEquals("Iterator and getRelative values differ!", element, getRelativeValue);
-			assertEquals("Iterator and get values differ!", element, getValue);
+			assertEquals((Long) (long) (i + 1), element, "Unexpected value returned by iterator!");
+			assertEquals(element, getRelativeValue, "Iterator and getRelative values differ!");
+			assertEquals(element, getValue, "Iterator and get values differ!");
 		}
 	}
 
@@ -189,14 +189,14 @@ public class OverwritingCircularBufferTest
 			instance.add((long) i);
 		}
 
-		assertFalse("Instance is empty!", instance.isEmpty());
-		assertTrue("Instance isn't full!", instance.isFull());
-		assertEquals("Size doesn't match!", TEST_BUFFER_SIZE, instance.getAvailableElements());
-		assertEquals("getBufferSize doesn't match!", TEST_BUFFER_SIZE, instance.getBufferSize());
+		assertFalse(instance.isEmpty(), "Instance is empty!");
+		assertTrue(instance.isFull(), "Instance isn't full!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getAvailableElements(), "Size doesn't match!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getBufferSize(), "getBufferSize doesn't match!");
 		long overflowCounter = instance.getOverflowCounter();
-		assertEquals("overflowCounter doesn't match!", TEST_BUFFER_SIZE, overflowCounter);
+		assertEquals(TEST_BUFFER_SIZE, overflowCounter, "overflowCounter doesn't match!");
 		Iterator<Long> iterator = instance.iterator();
-		assertTrue("iterator doesn't have next!", iterator.hasNext());
+		assertTrue(iterator.hasNext(), "iterator doesn't have next!");
 		for(int i = 0; i < TEST_BUFFER_SIZE; i++)
 		{
 			Long element = iterator.next();
@@ -204,9 +204,9 @@ public class OverwritingCircularBufferTest
 			Long getValue = instance.get(i + overflowCounter);
 			if(logger.isInfoEnabled()) logger.info("Element #{}: iterValue={}, getRelativeValue={}", i, element, getRelativeValue);
 
-			assertEquals("Unexpected value returned by iterator!", (Long) (long) (i + TEST_BUFFER_SIZE), element);
-			assertEquals("Iterator and getRelative values differ!", element, getRelativeValue);
-			assertEquals("Iterator and get values differ!", element, getValue);
+			assertEquals((Long) (long) (i + TEST_BUFFER_SIZE), element, "Unexpected value returned by iterator!");
+			assertEquals(element, getRelativeValue, "Iterator and getRelative values differ!");
+			assertEquals(element, getValue, "Iterator and get values differ!");
 		}
 	}
 
@@ -222,14 +222,14 @@ public class OverwritingCircularBufferTest
 		instance.addAll(values);
 		if(logger.isInfoEnabled()) logger.info("Buffer after adding: {}", instance);
 
-		assertFalse("Instance is empty!", instance.isEmpty());
-		assertTrue("Instance isn't full!", instance.isFull());
-		assertEquals("Size doesn't match!", TEST_BUFFER_SIZE, instance.getAvailableElements());
-		assertEquals("getBufferSize doesn't match!", TEST_BUFFER_SIZE, instance.getBufferSize());
+		assertFalse(instance.isEmpty(), "Instance is empty!");
+		assertTrue(instance.isFull(), "Instance isn't full!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getAvailableElements(), "Size doesn't match!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getBufferSize(), "getBufferSize doesn't match!");
 		long overflowCounter = instance.getOverflowCounter();
-		assertEquals("overflowCounter doesn't match!", 3 * TEST_BUFFER_SIZE, overflowCounter);
+		assertEquals(3 * TEST_BUFFER_SIZE, overflowCounter, "overflowCounter doesn't match!");
 		Iterator<Long> iterator = instance.iterator();
-		assertTrue("iterator doesn't have next!", iterator.hasNext());
+		assertTrue(iterator.hasNext(), "iterator doesn't have next!");
 		for(int i = 0; i < TEST_BUFFER_SIZE; i++)
 		{
 			Long element = iterator.next();
@@ -237,9 +237,9 @@ public class OverwritingCircularBufferTest
 			Long getValue = instance.get(i + overflowCounter);
 			if(logger.isInfoEnabled()) logger.info("Element #{}: iterValue={}, getRelativeValue={}", i, element, getRelativeValue);
 
-			assertEquals("Unexpected value returned by iterator!", (Long) (long) (i + 3 * TEST_BUFFER_SIZE), element);
-			assertEquals("Iterator and getRelative values differ!", element, getRelativeValue);
-			assertEquals("Iterator and get values differ!", element, getValue);
+			assertEquals((Long) (long) (i + 3 * TEST_BUFFER_SIZE), element, "Unexpected value returned by iterator!");
+			assertEquals(element, getRelativeValue, "Iterator and getRelative values differ!");
+			assertEquals(element, getValue, "Iterator and get values differ!");
 		}
 	}
 
@@ -255,14 +255,14 @@ public class OverwritingCircularBufferTest
 		instance.addAll(values);
 		if(logger.isInfoEnabled()) logger.info("Buffer after adding: {}", instance);
 
-		assertFalse("Instance is empty!", instance.isEmpty());
-		assertTrue("Instance isn't full!", instance.isFull());
-		assertEquals("Size doesn't match!", TEST_BUFFER_SIZE, instance.getAvailableElements());
-		assertEquals("getBufferSize doesn't match!", TEST_BUFFER_SIZE, instance.getBufferSize());
+		assertFalse(instance.isEmpty(), "Instance is empty!");
+		assertTrue(instance.isFull(), "Instance isn't full!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getAvailableElements(), "Size doesn't match!");
+		assertEquals(TEST_BUFFER_SIZE, instance.getBufferSize(), "getBufferSize doesn't match!");
 		long overflowCounter = instance.getOverflowCounter();
-		assertEquals("overflowCounter doesn't match!", 3 * TEST_BUFFER_SIZE, overflowCounter);
+		assertEquals(3 * TEST_BUFFER_SIZE, overflowCounter, "overflowCounter doesn't match!");
 		Iterator<Long> iterator = instance.iterator();
-		assertTrue("iterator doesn't have next!", iterator.hasNext());
+		assertTrue(iterator.hasNext(), "iterator doesn't have next!");
 		for(int i = 0; i < TEST_BUFFER_SIZE; i++)
 		{
 			Long element = iterator.next();
@@ -270,9 +270,9 @@ public class OverwritingCircularBufferTest
 			Long getValue = instance.get(i + overflowCounter);
 			if(logger.isInfoEnabled()) logger.info("Element #{}: iterValue={}, getRelativeValue={}", i, element, getRelativeValue);
 
-			assertEquals("Unexpected value returned by iterator!", (Long) (long) (i + 3 * TEST_BUFFER_SIZE), element);
-			assertEquals("Iterator and getRelative values differ!", element, getRelativeValue);
-			assertEquals("Iterator and get values differ!", element, getValue);
+			assertEquals((Long) (long) (i + 3 * TEST_BUFFER_SIZE), element, "Unexpected value returned by iterator!");
+			assertEquals(element, getRelativeValue, "Iterator and getRelative values differ!");
+			assertEquals(element, getValue, "Iterator and get values differ!");
 		}
 	}
 
@@ -324,11 +324,11 @@ public class OverwritingCircularBufferTest
 
 		if(valueCount == 0)
 		{
-			assertTrue("Instance isn't empty!", impl.isEmpty());
+			assertTrue(impl.isEmpty(), "Instance isn't empty!");
 		}
 		else
 		{
-			assertFalse("Instance is empty!", impl.isEmpty());
+			assertFalse(impl.isEmpty(), "Instance is empty!");
 		}
 		long expectedElementCount = valueCount;
 		long expectedOverflowCount = 0;
@@ -336,44 +336,44 @@ public class OverwritingCircularBufferTest
 		{
 			expectedElementCount = bufferSize;
 			expectedOverflowCount = valueCount - bufferSize;
-			assertTrue("Instance isn't full!", impl.isFull());
+			assertTrue(impl.isFull(), "Instance isn't full!");
 		}
 		else
 		{
-			assertFalse("Instance is full!", impl.isFull());
+			assertFalse(impl.isFull(), "Instance is full!");
 		}
-		assertEquals("Available doesn't match!", expectedElementCount, impl.getAvailableElements());
+		assertEquals(expectedElementCount, impl.getAvailableElements(), "Available doesn't match!");
 		long overflowCounter = instance.getOverflowCounter();
-		assertEquals("overflowCounter doesn't match!", expectedOverflowCount, overflowCounter);
-		assertEquals("Size doesn't match!", valueCount, impl.getSize());
+		assertEquals(expectedOverflowCount, overflowCounter, "overflowCounter doesn't match!");
+		assertEquals(valueCount, impl.getSize(), "Size doesn't match!");
 		for(int i = 0; i < expectedElementCount; i++)
 		{
-			assertFalse("Instance is empty!", impl.isEmpty());
-			assertEquals("Size doesn't match!", expectedElementCount - i, impl.getAvailableElements());
+			assertFalse(impl.isEmpty(), "Instance is empty!");
+			assertEquals(expectedElementCount - i, impl.getAvailableElements(), "Size doesn't match!");
 			if(logger.isDebugEnabled()) logger.debug("Size before removal of element #{}: {}", i, impl.getAvailableElements());
 
 			Long removeValue = impl.removeFirst();
 			if(logger.isDebugEnabled()) logger.debug("Size after removal of element #{}: {}", i, impl.getAvailableElements());
 
 			if(logger.isInfoEnabled()) logger.info("Element #{}: removeValue={}", i, removeValue);
-			assertEquals("Unexpected value returned by remove!", (Long) (expectedOverflowCount + i), removeValue);
+			assertEquals((Long) (expectedOverflowCount + i), removeValue, "Unexpected value returned by remove!");
 
-			assertFalse("Instance is full!", impl.isFull());
-			assertEquals("Size doesn't match!", expectedElementCount - i - 1, impl.getAvailableElements());
+			assertFalse(impl.isFull(), "Instance is full!");
+			assertEquals(expectedElementCount - i - 1, impl.getAvailableElements(), "Size doesn't match!");
 		}
-		assertTrue("Instance isn't empty!", impl.isEmpty());
+		assertTrue(impl.isEmpty(), "Instance isn't empty!");
 		Long removeValue = impl.removeFirst();
 		if(logger.isInfoEnabled()) logger.info("Element #{}: removeValue={}", expectedElementCount, removeValue);
 
-		assertNull("Remove after last element returned a value: " + removeValue, removeValue);
+		assertNull(removeValue, "Remove after last element returned a value: " + removeValue);
 
-		assertEquals("overflowCounter doesn't match!", expectedOverflowCount, impl.getOverflowCounter());
-		assertEquals("getSize doesn't match!", valueCount, impl.getSize());
+		assertEquals(expectedOverflowCount, impl.getOverflowCounter(), "overflowCounter doesn't match!");
+		assertEquals(valueCount, impl.getSize(), "getSize doesn't match!");
 		impl.reset();
-		assertEquals("overflowCounter doesn't match!", 0, impl.getOverflowCounter());
-		assertEquals("getSize doesn't match!", 0, impl.getSize());
-		assertTrue("Instance isn't empty!", impl.isEmpty());
-		assertFalse("Instance is full!", impl.isFull());
+		assertEquals(0, impl.getOverflowCounter(), "overflowCounter doesn't match!");
+		assertEquals(0, impl.getSize(), "getSize doesn't match!");
+		assertTrue(impl.isEmpty(), "Instance isn't empty!");
+		assertFalse(impl.isFull(), "Instance is full!");
 	}
 
 	public void internalTestRemoveAll(OverwritingCircularBuffer<Long> impl, int valueCount)
@@ -392,11 +392,11 @@ public class OverwritingCircularBufferTest
 
 		if(valueCount == 0)
 		{
-			assertTrue("Instance isn't empty!", impl.isEmpty());
+			assertTrue(impl.isEmpty(), "Instance isn't empty!");
 		}
 		else
 		{
-			assertFalse("Instance is empty!", impl.isEmpty());
+			assertFalse(impl.isEmpty(), "Instance is empty!");
 		}
 		long expectedElementCount = valueCount;
 		long expectedOverflowCount = 0;
@@ -404,32 +404,32 @@ public class OverwritingCircularBufferTest
 		{
 			expectedElementCount = bufferSize;
 			expectedOverflowCount = valueCount - bufferSize;
-			assertTrue("Instance isn't full!", impl.isFull());
+			assertTrue(impl.isFull(), "Instance isn't full!");
 		}
 		else
 		{
-			assertFalse("Instance is full!", impl.isFull());
+			assertFalse(impl.isFull(), "Instance is full!");
 		}
-		assertEquals("Size doesn't match!", expectedElementCount, impl.getAvailableElements());
-		assertEquals("overflowCounter doesn't match!", expectedOverflowCount, impl.getOverflowCounter());
-		assertEquals("getSize doesn't match!", valueCount, impl.getSize());
+		assertEquals(expectedElementCount, impl.getAvailableElements(), "Size doesn't match!");
+		assertEquals(expectedOverflowCount, impl.getOverflowCounter(), "overflowCounter doesn't match!");
+		assertEquals(valueCount, impl.getSize(), "getSize doesn't match!");
 
 		List<Long> removedList = impl.removeAll();
-		assertTrue("Instance isn't empty!", impl.isEmpty());
-		assertEquals("overflowCounter doesn't match!", expectedOverflowCount, impl.getOverflowCounter());
-		assertEquals("getSize doesn't match!", valueCount, impl.getSize());
+		assertTrue(impl.isEmpty(), "Instance isn't empty!");
+		assertEquals(expectedOverflowCount, impl.getOverflowCounter(), "overflowCounter doesn't match!");
+		assertEquals(valueCount, impl.getSize(), "getSize doesn't match!");
 
 
 		for(int i = 0; i < expectedElementCount; i++)
 		{
 			Long removeValue = removedList.get(i);
 			if(logger.isInfoEnabled()) logger.info("Element #{}: removeValue={}", i, removeValue);
-			assertEquals("Unexpected value returned by remove!", (Long) (expectedOverflowCount + i), removeValue);
+			assertEquals((Long) (expectedOverflowCount + i), removeValue, "Unexpected value returned by remove!");
 		}
 		impl.reset();
-		assertEquals("overflowCounter doesn't match!", 0, impl.getOverflowCounter());
-		assertEquals("getSize doesn't match!", 0, impl.getSize());
-		assertTrue("Instance isn't empty!", impl.isEmpty());
-		assertFalse("Instance is full!", impl.isFull());
+		assertEquals(0, impl.getOverflowCounter(), "overflowCounter doesn't match!");
+		assertEquals(0, impl.getSize(), "getSize doesn't match!");
+		assertTrue(impl.isEmpty(), "Instance isn't empty!");
+		assertFalse(impl.isFull(), "Instance is full!");
 	}
 }

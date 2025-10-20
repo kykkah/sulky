@@ -36,12 +36,13 @@ package de.huxhorn.sulky.resources;
 
 import de.huxhorn.sulky.resources.junit.Foobar;
 import java.util.Locale;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class LocalizableFactoryTest
 {
@@ -55,7 +56,7 @@ public class LocalizableFactoryTest
 		{
 			Class c = result.getClass();
 			String name = c.getName();
-			assertTrue("Expected proxy but got " + name + " instead.", name.contains("$Proxy"));
+			assertTrue(name.contains("$Proxy"), "Expected proxy but got " + name + " instead.");
 		}
 		else
 		{
@@ -99,7 +100,7 @@ public class LocalizableFactoryTest
 		loc = internalGetLocalizable(o, true);
 		loc.setLocale(locale);
 		l = loc.getLocale();
-		assertEquals(null, l);
+		assertNull(l);
 	}
 
 }

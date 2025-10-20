@@ -36,13 +36,13 @@ package de.huxhorn.sulky.buffers;
 
 import java.io.File;
 import java.nio.file.Files;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SerializingFileBufferTest
 {
@@ -54,7 +54,7 @@ public class SerializingFileBufferTest
 	private File serializeIndexFile;
 	private String[] values;
 
-	@Before
+	@BeforeEach
 	public void setUp()
 		throws Exception
 	{
@@ -79,7 +79,7 @@ public class SerializingFileBufferTest
 
 	}
 
-	@After
+	@AfterEach
 	public void tearDown()
 		throws Exception
 	{
@@ -101,14 +101,14 @@ public class SerializingFileBufferTest
 		{
 			String value = instance.get(i);
 			if(logger.isInfoEnabled()) logger.info("Element #{}={}", i, value);
-			assertEquals("Element #" + i + " differs!", values[i], value);
+			assertEquals(values[i], value, "Element #" + i + " differs!");
 		}
 
 		int index = 0;
 		for(String value : instance)
 		{
 			if(logger.isInfoEnabled()) logger.info("Element #{}={}", index, value);
-			assertEquals("Element #" + index + " differs!", values[index], value);
+			assertEquals(values[index], value, "Element #" + index + " differs!");
 			index++;
 		}
 	}
@@ -123,14 +123,14 @@ public class SerializingFileBufferTest
 		{
 			String value = instance.get(i);
 			if(logger.isInfoEnabled()) logger.info("Element #{}={}", i, value);
-			assertEquals("Element #" + i + " differs!", values[i], value);
+			assertEquals(values[i], value, "Element #" + i + " differs!");
 		}
 
 		int index = 0;
 		for(String value : instance)
 		{
 			if(logger.isInfoEnabled()) logger.info("Element #{}={}", index, value);
-			assertEquals("Element #" + index + " differs!", values[index], value);
+			assertEquals(values[index], value, "Element #" + index + " differs!");
 			index++;
 		}
 	}
