@@ -38,10 +38,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class XmlCodecTest
+class XmlCodecTest
 {
 	@Test
-	public void test()
+	void test()
 	{
 		String obj = "Foo";
 		XmlEncoder<String> encoder = new XmlEncoder<>();

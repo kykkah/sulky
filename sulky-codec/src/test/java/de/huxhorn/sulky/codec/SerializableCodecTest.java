@@ -38,10 +38,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SerializableCodecTest
+class SerializableCodecTest
 {
 	@Test
-	public void test()
+	void test()
 	{
 		String obj = "Foo";
 		SerializableCodec<String> instance = new SerializableCodec<>();

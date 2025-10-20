@@ -38,10 +38,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StaxUtilitiesTest
+class StaxUtilitiesTest
 {
 	@Test
-	public void testNormalizeNewlines()
+	void testNormalizeNewlines()
 	{
 		String input;
 		String result;
@@ -104,7 +104,7 @@ public class StaxUtilitiesTest
 	}
 
 	@Test
-	public void testReplaceWhiteSpace()
+	void testReplaceWhiteSpace()
 	{
 		String input;
 		String result;
@@ -167,7 +167,7 @@ public class StaxUtilitiesTest
 	}
 
 	@Test
-	public void testCollapseWhiteSpace()
+	void testCollapseWhiteSpace()
 	{
 		String input;
 		String result;

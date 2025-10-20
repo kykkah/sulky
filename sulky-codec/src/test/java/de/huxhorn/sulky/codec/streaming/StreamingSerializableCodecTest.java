@@ -41,10 +41,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StreamingSerializableCodecTest
+class StreamingSerializableCodecTest
 {
 	@Test
-	public void test() throws IOException
+	void test() throws IOException
 	{
 		String obj = "Foo";
 		StreamingSerializableCodec<String> instance = new StreamingSerializableCodec<>();

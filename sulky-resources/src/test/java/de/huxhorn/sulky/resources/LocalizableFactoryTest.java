@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class LocalizableFactoryTest
+class LocalizableFactoryTest
 {
 	private final Logger logger = LoggerFactory.getLogger(LocalizableFactoryTest.class);
 
@@ -66,7 +66,7 @@ public class LocalizableFactoryTest
 	}
 
 	@Test
-	public void getLocalizable()
+	void getLocalizable()
 		throws Exception
 	{
 		Locale locale = new Locale("de_DE");

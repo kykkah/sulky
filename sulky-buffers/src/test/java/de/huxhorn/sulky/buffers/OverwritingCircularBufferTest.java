@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class OverwritingCircularBufferTest
+class OverwritingCircularBufferTest
 {
 	private final Logger logger = LoggerFactory.getLogger(OverwritingCircularBufferTest.class);
 
@@ -55,14 +55,14 @@ public class OverwritingCircularBufferTest
 	private OverwritingCircularBuffer<Long> instance;
 
 	@BeforeEach
-	public void setUp()
+	void setUp()
 		throws Exception
 	{
 		instance = new OverwritingCircularBuffer<>(TEST_BUFFER_SIZE);
 	}
 
 	@Test
-	public void empty()
+	void empty()
 	{
 		assertTrue(instance.isEmpty(), "Instance is not empty!");
 		assertFalse(instance.isFull(), "Instance is full!");
@@ -74,7 +74,7 @@ public class OverwritingCircularBufferTest
 	}
 
 	@Test
-	public void one()
+	void one()
 	{
 		instance.add((long) 1);
 
@@ -96,7 +96,7 @@ public class OverwritingCircularBufferTest
 	}
 
 	@Test
-	public void nearlyFull()
+	void nearlyFull()
 	{
 		for(int i = 0; i < TEST_BUFFER_SIZE - 1; i++)
 		{
@@ -124,7 +124,7 @@ public class OverwritingCircularBufferTest
 	}
 
 	@Test
-	public void full()
+	void full()
 	{
 		for(int i = 0; i < TEST_BUFFER_SIZE; i++)
 		{
@@ -152,7 +152,7 @@ public class OverwritingCircularBufferTest
 	}
 
 	@Test
-	public void overflowOne()
+	void overflowOne()
 	{
 		for(int i = 0; i < TEST_BUFFER_SIZE; i++)
 		{
@@ -182,7 +182,7 @@ public class OverwritingCircularBufferTest
 	}
 
 	@Test
-	public void overflowDouble()
+	void overflowDouble()
 	{
 		for(int i = 0; i < TEST_BUFFER_SIZE * 2; i++)
 		{
@@ -211,7 +211,7 @@ public class OverwritingCircularBufferTest
 	}
 
 	@Test
-	public void addAllList()
+	void addAllList()
 	{
 		List<Long> values = new ArrayList<>();
 		for(int i = 0; i < 4 * TEST_BUFFER_SIZE; i++)
@@ -244,7 +244,7 @@ public class OverwritingCircularBufferTest
 	}
 
 	@Test
-	public void addAllArray()
+	void addAllArray()
 	{
 		Long[] values = new Long[4 * TEST_BUFFER_SIZE];
 		for(int i = 0; i < 4 * TEST_BUFFER_SIZE; i++)
@@ -277,7 +277,7 @@ public class OverwritingCircularBufferTest
 	}
 
 	@Test
-	public void addRemove()
+	void addRemove()
 	{
 		internalTestRemove(instance, 0);
 		internalTestRemove(instance, 3);
@@ -293,7 +293,7 @@ public class OverwritingCircularBufferTest
 	}
 
 	@Test
-	public void addRemoveAll()
+	void addRemoveAll()
 	{
 		internalTestRemoveAll(instance, 0);
 		internalTestRemoveAll(instance, 3);

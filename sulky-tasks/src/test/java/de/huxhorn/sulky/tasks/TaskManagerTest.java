@@ -57,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TaskManagerTest
+class TaskManagerTest
 {
 	private final Logger logger = LoggerFactory.getLogger(TaskManagerTest.class);
 
@@ -65,13 +65,13 @@ public class TaskManagerTest
 	private String taskName;
 
 	@BeforeAll
-	public static void enableHeadless()
+	static void enableHeadless()
 	{
 		System.setProperty("java.awt.headless", "true");
 	}
 
 	@BeforeEach
-	public void setUp()
+	void setUp()
 	{
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		if(logger.isDebugEnabled()) logger.debug("Toolkit: {}", tk);
@@ -80,7 +80,7 @@ public class TaskManagerTest
 	}
 
 	@AfterEach
-	public void shutDown()
+	void shutDown()
 	{
 		if(instance.getState() == TaskManager.State.RUNNING)
 		{
@@ -89,13 +89,13 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void notRunning()
+	void notRunning()
 	{
 		assertThrows(IllegalStateException.class, () -> instance.startTask(() -> null, "Won't work"));
 	}
 
 	@Test
-	public void states()
+	void states()
 	{
 		assertEquals(TaskManager.State.INITIALIZED, instance.getState());
 		instance.startUp();
@@ -108,7 +108,7 @@ public class TaskManagerTest
 	 * No exception, second shutDown should be silently ignored.
 	 */
 	@Test
-	public void shutDownTwice()
+	void shutDownTwice()
 	{
 		instance.startUp();
 		instance.shutDown();
@@ -116,14 +116,14 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void startUpTwice()
+	void startUpTwice()
 	{
 		instance.startUp();
 		assertThrows(IllegalStateException.class, instance::startUp);
 	}
 
 	@Test
-	public void restart()
+	void restart()
 	{
 		instance.startUp();
 		instance.shutDown();
@@ -131,26 +131,26 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void missingName()
+	void missingName()
 	{
 		instance.startUp();
 		assertThrows(IllegalArgumentException.class, () -> instance.startTask(() -> null, null));
 	}
 
 	@Test
-	public void missingExecutor()
+	void missingExecutor()
 	{
 		assertThrows(IllegalArgumentException.class, () -> new TaskManager(null));
 	}
 
 	@Test
-	public void missingExecutor2()
+	void missingExecutor2()
 	{
 		assertThrows(IllegalArgumentException.class, () -> new TaskManager(null, true));
 	}
 
 	@Test
-	public void withDescription()
+	void withDescription()
 	{
 		instance.startUp();
 		String name = "TaskName";
@@ -162,7 +162,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void withDescriptionAndMetaData()
+	void withDescriptionAndMetaData()
 	{
 		instance.startUp();
 		String name = "TaskName";
@@ -176,7 +176,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingCallableNoEDT()
+	void sleepingCallableNoEDT()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -191,7 +191,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingCallableEDT()
+	void sleepingCallableEDT()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -207,7 +207,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingCallable()
+	void sleepingCallable()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -232,7 +232,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingExceptionCallableNoEDT()
+	void sleepingExceptionCallableNoEDT()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -247,7 +247,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingExceptionCallableEDT()
+	void sleepingExceptionCallableEDT()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -264,7 +264,7 @@ public class TaskManagerTest
 
 
 	@Test
-	public void sleepingExceptionCallable()
+	void sleepingExceptionCallable()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -288,7 +288,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingProgressingCallableNoEDT()
+	void sleepingProgressingCallableNoEDT()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -303,7 +303,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingProgressingCallableEDT()
+	void sleepingProgressingCallableEDT()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -319,7 +319,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingProgressingCallable()
+	void sleepingProgressingCallable()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -343,7 +343,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingExceptionProgressingCallableNoEDT()
+	void sleepingExceptionProgressingCallableNoEDT()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -358,7 +358,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingExceptionProgressingCallableEDT()
+	void sleepingExceptionProgressingCallableEDT()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -374,7 +374,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingExceptionProgressingCallable()
+	void sleepingExceptionProgressingCallable()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -398,7 +398,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingCallableTaskListener()
+	void sleepingCallableTaskListener()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -431,7 +431,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingProgressingCallableTaskListener()
+	void sleepingProgressingCallableTaskListener()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -475,7 +475,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingExceptionCallableTaskListener()
+	void sleepingExceptionCallableTaskListener()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -508,7 +508,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void sleepingExceptionProgressingCallableTaskListener()
+	void sleepingExceptionProgressingCallableTaskListener()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -546,7 +546,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void cancelSleepingCallable()
+	void cancelSleepingCallable()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -571,7 +571,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void cancelSleepingProgressingCallable()
+	void cancelSleepingProgressingCallable()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -596,7 +596,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void cancelSleepingCallableTaskListener()
+	void cancelSleepingCallableTaskListener()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -628,7 +628,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void cancelSleepingProgressingCallableTaskListener()
+	void cancelSleepingProgressingCallableTaskListener()
 		throws InterruptedException
 	{
 		instance.startUp();
@@ -661,7 +661,7 @@ public class TaskManagerTest
 	}
 
 	@Test
-	public void multiTaskListener()
+	void multiTaskListener()
 		throws InterruptedException
 	{
 		instance.startUp();

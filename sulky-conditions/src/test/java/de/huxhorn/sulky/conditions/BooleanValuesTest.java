@@ -42,11 +42,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BooleanValuesTest
+class BooleanValuesTest
 	extends ConditionTestBase
 {
 	@Test
-	public void testTrue()
+	void testTrue()
 		throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		BooleanValues condition = BooleanValues.TRUE;
@@ -55,7 +55,7 @@ public class BooleanValuesTest
 	}
 
 	@Test
-	public void testFalse()
+	void testFalse()
 		throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		BooleanValues condition = BooleanValues.FALSE;
@@ -64,14 +64,14 @@ public class BooleanValuesTest
 	}
 
 	@Test
-	public void testHashCode()
+	void testHashCode()
 			throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		assertNotEquals(BooleanValues.FALSE.hashCode(), BooleanValues.TRUE.hashCode());
 	}
 
 	@Test
-	public void testEquals()
+	void testEquals()
 			throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		assertNotEquals(BooleanValues.FALSE, BooleanValues.TRUE);
@@ -79,7 +79,7 @@ public class BooleanValuesTest
 
 	@Test
 	@SuppressWarnings({"PMD.EqualsNull", "PMD.UseAssertEqualsInsteadOfAssertTrue", "PMD.SimplifiableTestAssertion"})
-	public void testBasicEquals()
+	void testBasicEquals()
 	{
 		Condition condition = BooleanValues.TRUE;
 		//noinspection ObjectEqualsNull
@@ -90,7 +90,7 @@ public class BooleanValuesTest
 	}
 
 	@Test
-	public void testString()
+	void testString()
 			throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		assertEquals("false", BooleanValues.FALSE.toString());

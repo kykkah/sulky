@@ -46,11 +46,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AndTest
+class AndTest
 	extends ConditionTestBase
 {
 	@Test
-	public void empty()
+	void empty()
 		throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		And condition = new And();
@@ -67,7 +67,7 @@ public class AndTest
 	}
 
 	@Test
-	public void tesTrue()
+	void tesTrue()
 		throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		And condition = new And();
@@ -86,7 +86,7 @@ public class AndTest
 	}
 
 	@Test
-	public void testFalse()
+	void testFalse()
 		throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		And condition = new And();
@@ -105,7 +105,7 @@ public class AndTest
 	}
 
 	@Test
-	public void testHash()
+	void testHash()
 	{
 		And condition1 = new And();
 		And condition2 = new And();
@@ -125,7 +125,7 @@ public class AndTest
 	}
 
 	@Test
-	public void testEquals()
+	void testEquals()
 	{
 		And condition1 = new And();
 		And condition2 = new And();
@@ -151,7 +151,7 @@ public class AndTest
 
 	@Test
 	@SuppressWarnings({"PMD.EqualsNull", "PMD.UseAssertEqualsInsteadOfAssertTrue", "PMD.SimplifiableTestAssertion"})
-	public void testBasicEquals()
+	void testBasicEquals()
 	{
 		Condition condition = new And();
 		//noinspection ObjectEqualsNull
@@ -162,7 +162,7 @@ public class AndTest
 	}
 
 	@Test
-	public void testString()
+	void testString()
 	{
 		And condition = new And();
 		assertEquals("true", condition.toString());

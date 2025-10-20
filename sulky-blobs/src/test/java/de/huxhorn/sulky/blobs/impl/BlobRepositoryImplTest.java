@@ -60,7 +60,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public class BlobRepositoryImplTest
+class BlobRepositoryImplTest
 	extends LoggingTestBase
 {
 	private static final String FOO = "foo";

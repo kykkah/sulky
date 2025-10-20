@@ -51,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GroovyInstanceTest
+class GroovyInstanceTest
 	extends LoggingTestBase
 {
 	private static final long ONE_MINUTE = 60_000;
@@ -62,7 +62,7 @@ public class GroovyInstanceTest
 	private File groovyFile;
 
 	@BeforeEach
-	public void setUp()
+	void setUp()
 		throws IOException
 	{
 		groovyFile = tempDir.resolve("Foo.groovy").toFile();

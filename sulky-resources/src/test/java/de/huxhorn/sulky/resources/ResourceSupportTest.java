@@ -57,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SuppressWarnings("PMD.CloseResource")
-public class ResourceSupportTest
+class ResourceSupportTest
 {
 	private final Logger logger = LoggerFactory.getLogger(ResourceSupportTest.class);
 
@@ -644,7 +644,7 @@ public class ResourceSupportTest
 	}
 
 	@BeforeAll
-	public static void beforeClass()
+	static void beforeClass()
 		throws Exception
 	{
 		prevDefault = Locale.getDefault();
@@ -652,26 +652,26 @@ public class ResourceSupportTest
 	}
 
 	@AfterAll
-	public static void afterClass()
+	static void afterClass()
 		throws Exception
 	{
 		Locale.setDefault(prevDefault);
 	}
 
 	@BeforeEach
-	public void initInstance()
+	void initInstance()
 	{
 		resourcesupport = new ResourceSupport(new Foobar());
 	}
 
 	@Test
-	public void constructor()
+	void constructor()
 	{
 		assertThrows(IllegalArgumentException.class, () -> new ResourceSupport(null));
 	}
 
 	@Test
-	public void resolveLocale()
+	void resolveLocale()
 		throws Exception
 	{
 		Localizable l = resourcesupport.getLocalizable();
@@ -683,7 +683,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getResourceClass()
+	void getResourceClass()
 		throws Exception
 	{
 		internalGetResourceClass(Foobar.class);
@@ -698,7 +698,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getResourceObject()
+	void getResourceObject()
 		throws Exception
 	{
 		resourcesupport = new ResourceSupport(Foobar.class);
@@ -714,7 +714,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getLocalizable()
+	void getLocalizable()
 		throws Exception
 	{
 		resourcesupport = new ResourceSupport(Foobar.class);
@@ -765,7 +765,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getLocalResources()
+	void getLocalResources()
 		throws Exception
 	{
 		// de.huxhorn.sulky.resources.junit.Foobar.class;
@@ -817,7 +817,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getLocalResource()
+	void getLocalResource()
 		throws Exception
 	{
 		// de.huxhorn.sulky.resources.junit.Foobar.class;
@@ -849,7 +849,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getLocalResourceAsStream()
+	void getLocalResourceAsStream()
 		throws Exception
 	{
 		// de.huxhorn.sulky.resources.junit.Foobar.class;
@@ -881,7 +881,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getResources()
+	void getResources()
 		throws Exception
 	{
 		// de.huxhorn.sulky.resources.junit.Foobar.class;
@@ -980,7 +980,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getResource()
+	void getResource()
 		throws Exception
 	{
 		// de.huxhorn.sulky.resources.junit.Foobar.class;
@@ -1012,7 +1012,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getResourceAsStream()
+	void getResourceAsStream()
 		throws Exception
 	{
 		// de.huxhorn.sulky.resources.junit.Foobar.class;
@@ -1044,7 +1044,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getLocalResourceMap()
+	void getLocalResourceMap()
 		throws Exception
 	{
 		// Foobar.class;
@@ -1071,7 +1071,7 @@ public class ResourceSupportTest
 	}
 
 	@Test
-	public void getResourceMap()
+	void getResourceMap()
 		throws Exception
 	{
 		// Foobar.class;

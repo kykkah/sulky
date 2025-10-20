@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class PathToolsTest
+class PathToolsTest
 {
 	private final Logger logger = LoggerFactory.getLogger(PathToolsTest.class);
 
@@ -96,7 +96,7 @@ public class PathToolsTest
 	}
 
 	@Test
-	public void resolvePath()
+	void resolvePath()
 		throws Exception
 	{
 		internalResolvePath("", "", "");
@@ -114,7 +114,7 @@ public class PathToolsTest
 	}
 
 	@Test
-	public void evaluatePath()
+	void evaluatePath()
 		throws Exception
 	{
 		internalEvaluatePath("", "");
@@ -131,7 +131,7 @@ public class PathToolsTest
 	}
 
 	@Test
-	public void getAbsolutePath()
+	void getAbsolutePath()
 		throws Exception
 	{
 		internalGetAbsolutePath("", "", null);
@@ -149,7 +149,7 @@ public class PathToolsTest
 	}
 
 	@Test
-	public void getParentPath()
+	void getParentPath()
 		throws Exception
 	{
 		internalGetParentPath("", "..");
@@ -165,7 +165,7 @@ public class PathToolsTest
 	}
 
 	@Test
-	public void getCompatiblePath()
+	void getCompatiblePath()
 		throws Exception
 	{
 		internalGetCompatiblePath(".../foo", "../../foo");
@@ -175,7 +175,7 @@ public class PathToolsTest
 	}
 
 	@Test
-	public void isDotPattern()
+	void isDotPattern()
 		throws Exception
 	{
 		// TEST: de.huxhorn.sulky.resources.PathTools.isDotPattern(String): testIsDotPattern
@@ -187,7 +187,7 @@ public class PathToolsTest
 	}
 
 	@Test
-	public void getPathStack()
+	void getPathStack()
 		throws Exception
 	{
 		internalGetPathStack("", true, new String[]{});
@@ -201,7 +201,7 @@ public class PathToolsTest
 	}
 
 	@Test
-	public void getPathStackString()
+	void getPathStackString()
 		throws Exception
 	{
 		internalGetPathStackString("", true, "");

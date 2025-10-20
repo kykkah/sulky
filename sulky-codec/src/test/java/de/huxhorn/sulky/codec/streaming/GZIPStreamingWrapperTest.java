@@ -41,10 +41,10 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GZIPStreamingWrapperTest
+class GZIPStreamingWrapperTest
 {
 	@Test
-	public void test() throws IOException
+	void test() throws IOException
 	{
 		String obj = "Foo";
 		StreamingEncoder<String> encoder = new GZIPStreamingEncoderWrapper<>(new StreamingSerializableCodec<>());

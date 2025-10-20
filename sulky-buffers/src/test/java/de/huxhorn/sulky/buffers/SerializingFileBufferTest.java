@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SerializingFileBufferTest
+class SerializingFileBufferTest
 {
 	private final Logger logger = LoggerFactory.getLogger(SerializingFileBufferTest.class);
 
@@ -55,7 +55,7 @@ public class SerializingFileBufferTest
 	private String[] values;
 
 	@BeforeEach
-	public void setUp()
+	void setUp()
 		throws Exception
 	{
 		tempOutputPath = Files.createTempDirectory("sfb-testing" + "rulez").toFile();
@@ -80,7 +80,7 @@ public class SerializingFileBufferTest
 	}
 
 	@AfterEach
-	public void tearDown()
+	void tearDown()
 		throws Exception
 	{
 		serializeFile.delete();
@@ -89,7 +89,7 @@ public class SerializingFileBufferTest
 	}
 
 	@Test
-	public void readWriteAdd()
+	void readWriteAdd()
 	{
 		for(String current : values)
 		{
@@ -114,7 +114,7 @@ public class SerializingFileBufferTest
 	}
 
 	@Test
-	public void readWriteAddAll()
+	void readWriteAddAll()
 	{
 		instance.addAll(values);
 		assertEquals(values.length, (int) instance.getSize());

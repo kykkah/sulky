@@ -43,7 +43,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ResourceMapsTest
+class ResourceMapsTest
 {
 	private static final Locale US_LOCALE = new Locale("en", "US");
 	private static final Locale GERMANY_LOCALE = new Locale("de", "DE");
@@ -104,7 +104,7 @@ public class ResourceMapsTest
 	}
 
 	@BeforeAll
-	public static void beforeClass()
+	static void beforeClass()
 		throws Exception
 	{
 		prevDefault = Locale.getDefault();
@@ -112,14 +112,14 @@ public class ResourceMapsTest
 	}
 
 	@AfterAll
-	public static void afterClass()
+	static void afterClass()
 		throws Exception
 	{
 		Locale.setDefault(prevDefault);
 	}
 
 	@Test
-	public void getResourceMap()
+	void getResourceMap()
 		throws Exception
 	{
 		Class c;
@@ -151,7 +151,7 @@ public class ResourceMapsTest
 	}
 
 	@Test
-	public void getLocalResourceMap()
+	void getLocalResourceMap()
 		throws Exception
 	{
 		Class c;

@@ -41,10 +41,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ConditionsTest
+class ConditionsTest
 {
 	@Test
-	public void containsBasic()
+	void containsBasic()
 	{
 		assertFalse(Conditions.contains(null, null));
 		assertFalse(Conditions.contains(null, BooleanValues.TRUE));
@@ -53,7 +53,7 @@ public class ConditionsTest
 	}
 
 	@Test
-	public void containsWrapper()
+	void containsWrapper()
 	{
 		ConditionWrapper conditionWrapper = new Not();
 		assertTrue(Conditions.contains(conditionWrapper, null));
@@ -70,7 +70,7 @@ public class ConditionsTest
 	}
 
 	@Test
-	public void containsGroup()
+	void containsGroup()
 	{
 		ConditionGroup conditionGroup = new And();
 		assertTrue(Conditions.contains(conditionGroup, conditionGroup));

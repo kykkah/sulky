@@ -41,11 +41,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class AmbiguousIdExceptionTest
+class AmbiguousIdExceptionTest
 {
 	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
 	@Test
-	public void normal()
+	void normal()
 	{
 		String[] candidates = {"foo", "bar"};
 		AmbiguousIdException ex=new AmbiguousIdException("id", candidates);
@@ -56,7 +56,7 @@ public class AmbiguousIdExceptionTest
 
 	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
 	@Test
-	public void error()
+	void error()
 	{
 		assertThrows(IllegalArgumentException.class, () -> new AmbiguousIdException("id", null));
 	}

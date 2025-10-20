@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SuppressWarnings("PMD.CloseResource")
-public class ResourcesTest
+class ResourcesTest
 {
 	private final Logger logger = LoggerFactory.getLogger(ResourcesTest.class);
 
@@ -579,7 +579,7 @@ public class ResourcesTest
 	}
 
 	@BeforeAll
-	public static void beforeClass()
+	static void beforeClass()
 		throws Exception
 	{
 		prevDefault = Locale.getDefault();
@@ -587,14 +587,14 @@ public class ResourcesTest
 	}
 
 	@AfterAll
-	public static void afterClass()
+	static void afterClass()
 		throws Exception
 	{
 		Locale.setDefault(prevDefault);
 	}
 
 	@Test
-	public void getLocalResources()
+	void getLocalResources()
 		throws Exception
 	{
 		Class c;
@@ -650,7 +650,7 @@ public class ResourcesTest
 	}
 
 	@Test
-	public void getLocalResource()
+	void getLocalResource()
 		throws Exception
 	{
 		Class c;
@@ -684,7 +684,7 @@ public class ResourcesTest
 	}
 
 	@Test
-	public void getLocalResourceAsStream()
+	void getLocalResourceAsStream()
 		throws Exception
 	{
 		Class c;
@@ -718,7 +718,7 @@ public class ResourcesTest
 	}
 
 	@Test
-	public void getResources()
+	void getResources()
 		throws Exception
 	{
 		Class c;
@@ -784,7 +784,7 @@ public class ResourcesTest
 	}
 
 	@Test
-	public void getResource()
+	void getResource()
 		throws Exception
 	{
 		Class c;
@@ -818,7 +818,7 @@ public class ResourcesTest
 	}
 
 	@Test
-	public void getResourceAsStream()
+	void getResourceAsStream()
 		throws Exception
 	{
 		Class c;
@@ -852,7 +852,7 @@ public class ResourcesTest
 	}
 
 	@Test
-	public void getShortClassName()
+	void getShortClassName()
 		throws Exception
 	{
 		String str;
@@ -865,7 +865,7 @@ public class ResourcesTest
 	}
 
 	@Test
-	public void getLocaleSuffixArray()
+	void getLocaleSuffixArray()
 		throws Exception
 	{
 		internalGetLocaleSuffixArray(GERMANY_LOCALE, new String[]
@@ -922,7 +922,7 @@ public class ResourcesTest
 	}
 
 	@Test
-	public void getSingleLocaleSuffixArray()
+	void getSingleLocaleSuffixArray()
 		throws Exception
 	{
 		internalGetSingleLocaleSuffixArray(GERMANY_LOCALE, new String[]
@@ -954,7 +954,7 @@ public class ResourcesTest
 	}
 
 	@Test
-	public void getPathToClass()
+	void getPathToClass()
 		throws Exception
 	{
 		String str;
@@ -967,7 +967,7 @@ public class ResourcesTest
 	}
 
 	@Test
-	public void getPathToPackage()
+	void getPathToPackage()
 		throws Exception
 	{
 		String str;

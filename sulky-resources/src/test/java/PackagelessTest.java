@@ -42,10 +42,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * A seperate class to test Resources.getShortClassName() without package.
  */
 @SuppressWarnings("PMD.NoPackage")
-public class PackagelessTest
+class PackagelessTest
 {
 	@Test
-	public void getShortClassName()
+	void getShortClassName()
 		throws Exception
 	{
 		String str;
@@ -55,7 +55,7 @@ public class PackagelessTest
 	}
 
 	@Test
-	public void getPathToPackage()
+	void getPathToPackage()
 		throws Exception
 	{
 		String str;

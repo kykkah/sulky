@@ -49,11 +49,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 @SuppressWarnings("PMD.CloseResource") // because of Mock
-public class TimeoutOutputStreamTest
+class TimeoutOutputStreamTest
 {
 
 	@Test
-	public void normalUse()
+	void normalUse()
 		throws IOException
 	{
 		byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -85,7 +85,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void exceptionInWriteByte()
+	void exceptionInWriteByte()
 		throws IOException
 	{
 		OutputStream mockStream = createStrictMock(OutputStream.class);
@@ -117,7 +117,7 @@ public class TimeoutOutputStreamTest
 
 
 	@Test
-	public void exceptionInWriteByteArray()
+	void exceptionInWriteByteArray()
 		throws IOException
 	{
 		byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -149,7 +149,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void exceptionInWriteByteArrayOffset()
+	void exceptionInWriteByteArrayOffset()
 		throws IOException
 	{
 		byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -181,7 +181,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void exceptionInFlush()
+	void exceptionInFlush()
 		throws IOException
 	{
 		OutputStream mockStream = createStrictMock(OutputStream.class);
@@ -212,7 +212,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void exceptionInClose()
+	void exceptionInClose()
 		throws IOException
 	{
 		OutputStream mockStream = createStrictMock(OutputStream.class);
@@ -242,7 +242,7 @@ public class TimeoutOutputStreamTest
 
 
 	@Test
-	public void runtimeExceptionInWriteByte()
+	void runtimeExceptionInWriteByte()
 		throws IOException
 	{
 		OutputStream mockStream = createStrictMock(OutputStream.class);
@@ -273,7 +273,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void runtimeExceptionInWriteByteArray()
+	void runtimeExceptionInWriteByteArray()
 		throws IOException
 	{
 		byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -305,7 +305,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void runtimeExceptionInWriteByteArrayOffset()
+	void runtimeExceptionInWriteByteArrayOffset()
 		throws IOException
 	{
 		byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -337,7 +337,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void runtimeExceptionInFlush()
+	void runtimeExceptionInFlush()
 		throws IOException
 	{
 		OutputStream mockStream = createStrictMock(OutputStream.class);
@@ -368,7 +368,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void runtimeExceptionInClose()
+	void runtimeExceptionInClose()
 		throws IOException
 	{
 		OutputStream mockStream = createStrictMock(OutputStream.class);
@@ -398,7 +398,7 @@ public class TimeoutOutputStreamTest
 
 
 	@Test
-	public void timeoutInWriteByte()
+	void timeoutInWriteByte()
 		throws IOException
 	{
 		OutputStream mockStream = createStrictMock(OutputStream.class);
@@ -424,7 +424,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void timeoutInWriteByteArray()
+	void timeoutInWriteByteArray()
 		throws IOException
 	{
 		byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -451,7 +451,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void timeoutInWriteByteArrayOffset()
+	void timeoutInWriteByteArrayOffset()
 		throws IOException
 	{
 		byte[] bytes = {1, 2, 3, 4, 5, 6, 7, 8, 9};
@@ -478,7 +478,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void timeoutInFlush()
+	void timeoutInFlush()
 		throws IOException
 	{
 		OutputStream mockStream = createStrictMock(OutputStream.class);
@@ -504,7 +504,7 @@ public class TimeoutOutputStreamTest
 	}
 
 	@Test
-	public void timeoutInClose()
+	void timeoutInClose()
 		throws IOException
 	{
 		OutputStream mockStream = createStrictMock(OutputStream.class);

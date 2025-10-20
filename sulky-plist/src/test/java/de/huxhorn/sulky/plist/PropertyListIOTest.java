@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PropertyListIOTest
+class PropertyListIOTest
 {
 	private final Logger logger = LoggerFactory.getLogger(PropertyListIOTest.class);
 
@@ -60,14 +60,14 @@ public class PropertyListIOTest
 	private PropertyListDecoder decoder;
 
 	@BeforeEach
-	public void createInstances()
+	void createInstances()
 	{
 		encoder=new PropertyListEncoder();
 		decoder=new PropertyListDecoder();
 	}
 
 	@Test
-	public void empty()
+	void empty()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -75,7 +75,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void longRoot()
+	void longRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -84,7 +84,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void integerRoot()
+	void integerRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -94,7 +94,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void shortRoot()
+	void shortRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -104,7 +104,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void charRoot()
+	void charRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -114,7 +114,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void byteRoot()
+	void byteRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -124,7 +124,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void doubleRoot()
+	void doubleRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -133,7 +133,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void floatRoot()
+	void floatRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -144,7 +144,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void stringRoot()
+	void stringRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -153,7 +153,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void trueRoot()
+	void trueRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -162,7 +162,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void falseRoot()
+	void falseRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -171,7 +171,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void longArrayRoot()
+	void longArrayRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -186,7 +186,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void intArrayRoot()
+	void intArrayRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -201,7 +201,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void shortArrayRoot()
+	void shortArrayRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -216,7 +216,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void charArrayRoot()
+	void charArrayRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -227,7 +227,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void booleanArrayRoot()
+	void booleanArrayRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -242,7 +242,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void doubleArrayRoot()
+	void doubleArrayRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -258,7 +258,7 @@ public class PropertyListIOTest
 
 	@SuppressWarnings({"unchecked"})
 	@Test
-	public void floatArrayRoot()
+	void floatArrayRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -276,7 +276,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void objectArrayRoot()
+	void objectArrayRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -292,7 +292,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void dateRoot()
+	void dateRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -302,7 +302,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void dataRoot()
+	void dataRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -314,7 +314,7 @@ public class PropertyListIOTest
 
 
 	@Test
-	public void emptyArrayRoot()
+	void emptyArrayRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -324,7 +324,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void arrayRoot()
+	void arrayRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -337,7 +337,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void emptyMapRoot()
+	void emptyMapRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -347,7 +347,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void mapRoot()
+	void mapRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();
@@ -359,7 +359,7 @@ public class PropertyListIOTest
 	}
 
 	@Test
-	public void toStringRoot()
+	void toStringRoot()
 		throws Throwable
 	{
 		PropertyList list=new PropertyList();

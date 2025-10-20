@@ -43,11 +43,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class NotTest
+class NotTest
 	extends ConditionTestBase
 {
 	@Test
-	public void empty()
+	void empty()
 		throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		Not condition = new Not();
@@ -57,7 +57,7 @@ public class NotTest
 	}
 
 	@Test
-	public void testTrue()
+	void testTrue()
 		throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		Not condition = new Not();
@@ -67,7 +67,7 @@ public class NotTest
 	}
 
 	@Test
-	public void testFalse()
+	void testFalse()
 		throws CloneNotSupportedException, IOException, ClassNotFoundException
 	{
 		Not condition = new Not();
@@ -77,7 +77,7 @@ public class NotTest
 	}
 
 	@Test
-	public void testHash()
+	void testHash()
 	{
 		Not condition1 = new Not();
 		Not condition2 = new Not();
@@ -96,7 +96,7 @@ public class NotTest
 	}
 
 	@Test
-	public void testEquals()
+	void testEquals()
 	{
 		Not condition1 = new Not();
 		Not condition2 = new Not();
@@ -119,7 +119,7 @@ public class NotTest
 
 	@Test
 	@SuppressWarnings({"PMD.EqualsNull", "PMD.UseAssertEqualsInsteadOfAssertTrue", "PMD.SimplifiableTestAssertion"})
-	public void testBasicEquals()
+	void testBasicEquals()
 	{
 		Condition condition = new Not();
 		//noinspection ObjectEqualsNull
@@ -130,7 +130,7 @@ public class NotTest
 	}
 
 	@Test
-	public void testString()
+	void testString()
 	{
 		Not condition = new Not();
 		assertEquals("false", condition.toString());
