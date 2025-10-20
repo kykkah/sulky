@@ -44,48 +44,33 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Collection;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.LoggerFactory;
 
 @SuppressWarnings({"PMD.SystemPrintln"})
-@RunWith(Parameterized.class)
 public class LoggingTestBase
 {
 	protected boolean verbose = false;
 	protected boolean deleteLogFiles = false;
-	private final Boolean logging;
+	private Boolean logging;
 	private File loggingFile;
 
-	public LoggingTestBase(Boolean logging)
+	public LoggingTestBase()
+	{
+	}
+
+	void setLogging(Boolean logging)
 	{
 		this.logging = logging;
 	}
 
-	@Parameters
-	public static Collection<Object[]> configs()
-	{
-		return Arrays.asList(new Object[][]{
-				{null},
-				{Boolean.TRUE},
-				{Boolean.FALSE},
-		});
-	}
-
-	@Before
-	public void setUpLogging()
+	void beforeEachLogging()
 			throws IOException
 	{
 		loggingFile = null;
-		if (this.logging != null)
+		if (logging != null)
 		{
-			if (this.logging)
+			if (logging)
 			{
 				loggingFile = File.createTempFile("logging", "log");
 				enableAllLogging(loggingFile, verbose);
@@ -101,8 +86,7 @@ public class LoggingTestBase
 		}
 	}
 
-	@After
-	public void tearDownLogging()
+	void afterEachLogging()
 	{
 		if (logging != null)
 		{

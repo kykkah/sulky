@@ -34,31 +34,22 @@
 
 package de.huxhorn.sulky.junit;
 
-import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- */
 public class LoggingTestBaseExampleTest
 	extends LoggingTestBase
 {
 	private final Logger logger = LoggerFactory.getLogger(LoggingTestBaseExampleTest.class);
 
-	public LoggingTestBaseExampleTest(Boolean logging)
-	{
-		super(logging);
-	}
-
-	@Test
+	@LoggingTest
 	public void someTest()
 	{
 		if(logger.isDebugEnabled()) logger.debug("Shouldn't show up in default mode.");
 		if(logger.isInfoEnabled()) logger.info("Just some logging message to see if everything works.");
-
 	}
 
-	@Test
+	@LoggingTest
 	public void someOtherTest()
 	{
 		if(logger.isDebugEnabled()) logger.debug("Other - Shouldn't show up in default mode.");
