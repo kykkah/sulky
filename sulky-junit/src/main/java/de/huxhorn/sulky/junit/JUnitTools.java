@@ -52,10 +52,10 @@ import java.nio.file.attribute.FileTime;
 import java.util.Objects;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 @SuppressWarnings("PMD.JUnit4TestShouldUseTestAnnotation")
 public final class JUnitTools
@@ -82,9 +82,9 @@ public final class JUnitTools
 		}
 		else
 		{
-			assertNotSame(messagePart + " are the same but shouldn't.", original, other);
-			assertEquals(messagePart + " are not equal.", original, other);
-			assertEquals("Hashes of " + messagePart + " differ!", original.hashCode(), other.hashCode());
+			assertNotSame(original, other, messagePart + " are the same but shouldn't.");
+			assertEquals(original, other, messagePart + " are not equal.");
+			assertEquals(original.hashCode(), other.hashCode(), "Hashes of " + messagePart + " differ!");
 		}
 	}
 
