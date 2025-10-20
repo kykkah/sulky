@@ -55,10 +55,6 @@ public class LoggingTestBase
 	private Boolean logging;
 	private File loggingFile;
 
-	public LoggingTestBase()
-	{
-	}
-
 	void setLogging(Boolean logging)
 	{
 		this.logging = logging;
